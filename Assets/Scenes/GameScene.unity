@@ -1247,6 +1247,7 @@ GameObject:
   - component: {fileID: 1453984125}
   - component: {fileID: 1453984124}
   - component: {fileID: 1453984126}
+  - component: {fileID: 1453984127}
   m_Layer: 5
   m_Name: GunImage
   m_TagString: Untagged
@@ -1368,6 +1369,26 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!95 &1453984127
+Animator:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1453984122}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 0920c848d11324f0eb03be58e109014b, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &1458959569
 GameObject:
   m_ObjectHideFlags: 0
@@ -1477,6 +1498,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f2501ce780f34925aeea96a0c9a08fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  animator: {fileID: 1453984127}
 --- !u!1 &1537542407
 GameObject:
   m_ObjectHideFlags: 0

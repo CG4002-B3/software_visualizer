@@ -1,27 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Video;
 
 public class ExplosionController : MonoBehaviour
 {
-    VideoPlayer video;
+    public ParticleSystem explosionParticles;
 
-    void Awake()
+    void Start ()
     {
-        video = GetComponent<VideoPlayer>();
-        video.Stop();
+        explosionParticles.Stop();
+        explosionParticles.Clear();
     }
 
-    // Start is called before the first frame update
-    void Start()
+    public void ExplosionButtonPress()
     {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        explosionParticles.Play();
     }
 }

@@ -14,9 +14,8 @@ public class BulletController : MonoBehaviour
 
     public Animator animator;
 
-    public AudioSource[] audioSources;
-    AudioSource shootingSound;
-    AudioSource reloadingSound;
+    public AudioSource shootingSound;
+    public AudioSource reloadingSound;
 
     private bool isReloading = false;
 
@@ -25,9 +24,6 @@ public class BulletController : MonoBehaviour
     {
         bulletsRemaining = MAX_NUM_OF_BULLETS;
         bullets = GetComponent<Text>();
-
-        shootingSound = audioSources[0];
-        reloadingSound = audioSources[1];
 
         shootingSound.Stop();
         reloadingSound.Stop();

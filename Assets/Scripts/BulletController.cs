@@ -17,6 +17,8 @@ public class BulletController : MonoBehaviour
     public AudioSource shootingSound;
     public AudioSource reloadingSound;
 
+    public ParticleSystem bulletSmoke;
+
     private bool isReloading = false;
 
     // Start is called before the first frame update
@@ -27,6 +29,9 @@ public class BulletController : MonoBehaviour
 
         shootingSound.Stop();
         reloadingSound.Stop();
+
+        bulletSmoke.Stop();
+        bulletSmoke.Clear();
     }
 
     void OnEnable()
@@ -61,6 +66,7 @@ public class BulletController : MonoBehaviour
         if (bulletsRemaining > 0)
         {
             shootingSound.Play();
+            bulletSmoke.Play();
         }
         bulletsRemaining = Math.Max(bulletsRemaining - 1, -1);
     }

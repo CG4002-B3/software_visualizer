@@ -10,7 +10,6 @@ public class GrenadeController : MonoBehaviour
 
     public int grenadesRemaining;
     public Image[] grenades;
-    public Sprite grenadeVisible;
 
     void Update()
     {

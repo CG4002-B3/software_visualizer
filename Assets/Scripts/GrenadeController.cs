@@ -29,9 +29,10 @@ public class GrenadeController : MonoBehaviour
     public void ReduceGrenades()
     {
         grenadesRemaining = Math.Max(grenadesRemaining - 1, 0);
-        if (grenadesRemaining == 0)
-        {
-            grenadesRemaining = MAX_NUM_OF_GRENADES;
-        }
+    }
+
+    public void ResetGrenadesRemaining()
+    {
+        grenadesRemaining = MAX_NUM_OF_GRENADES;
     }
 }

@@ -39,10 +39,11 @@ public class ShieldController : MonoBehaviour
         if (!shieldOverlayController.GetIsShowingShield())
         {
             shieldsRemaining = Math.Max(shieldsRemaining - 1, 0);
-            if (shieldsRemaining == 0)
-            {
-                shieldsRemaining = MAX_NUM_OF_SHIELDS;
-            }
         }
+    }
+
+    public void ResetShieldsRemaining()
+    {
+        shieldsRemaining = MAX_NUM_OF_SHIELDS;
     }
 }

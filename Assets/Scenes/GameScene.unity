@@ -4088,6 +4088,8 @@ MonoBehaviour:
   - {fileID: 913500600}
   - {fileID: 138844134}
   healthPointText: {fileID: 605204676}
+  grenadeController: {fileID: 1251559840}
+  shieldController: {fileID: 419417575}
 --- !u!1 &1880396912
 GameObject:
   m_ObjectHideFlags: 0

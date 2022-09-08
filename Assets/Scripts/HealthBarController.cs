@@ -12,6 +12,9 @@ public class HealthBarController : MonoBehaviour
     public Image[] healthSegments;
     public Text healthPointText;
 
+    public GrenadeController grenadeController;
+    public ShieldController shieldController;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -43,6 +46,13 @@ public class HealthBarController : MonoBehaviour
         if (healthRemaining == 0)
         {
             healthRemaining = MAX_HEALTH;
+            grenadeController.ResetGrenadesRemaining();
+            shieldController.ResetShieldsRemaining();
         }
+    }
+
+    public int GetHealthRemaining()
+    {
+        return healthRemaining;
     }
 }

@@ -10,6 +10,7 @@ public class GrenadeController : MonoBehaviour
 
     public int grenadesRemaining;
     public Image[] grenades;
+    public ExplosionController explosionController;
 
     void Update()
     {
@@ -28,7 +29,10 @@ public class GrenadeController : MonoBehaviour
 
     public void ReduceGrenades()
     {
-        grenadesRemaining = Math.Max(grenadesRemaining - 1, 0);
+        if (!explosionController.GetIsGrenadeThrown())
+        {
+            grenadesRemaining = Math.Max(grenadesRemaining - 1, 0);
+        }
     }
 
     public void ResetGrenadesRemaining()

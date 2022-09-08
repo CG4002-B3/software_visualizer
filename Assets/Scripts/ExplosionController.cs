@@ -49,4 +49,9 @@ public class ExplosionController : MonoBehaviour
         isGrenadeThrown = false;
         isWaitingForDelay = false;
     }
+
+    public bool GetIsGrenadeThrown()
+    {
+        return isGrenadeThrown;
+    }
 }

@@ -2845,6 +2845,7 @@ MonoBehaviour:
   grenades:
   - {fileID: 1596252587}
   - {fileID: 2068188033}
+  explosionController: {fileID: 1859379896}
 --- !u!1 &1346631604
 GameObject:
   m_ObjectHideFlags: 0

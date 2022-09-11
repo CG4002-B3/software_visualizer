@@ -7,7 +7,7 @@ public class ShieldOverlayController : MonoBehaviour
 {
     private float SHIELD_DELAY = 10f;
 
-    public SpriteRenderer shieldOverlay;
+    public Image shieldOverlay;
     public Text shieldCountdown;
 
     private bool shouldShowShield;

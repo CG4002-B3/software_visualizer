@@ -13,6 +13,8 @@ public class ExplosionController : MonoBehaviour
     private bool shouldIndicateExplosion;
     private bool isWaitingForDelay;
 
+    public Animator animator;
+
     void Start ()
     {
         isGrenadeThrown = false;
@@ -20,6 +22,11 @@ public class ExplosionController : MonoBehaviour
         explosionParticles.Stop();
         explosionParticles.Clear();
         grenadeExplosionSound.Stop();
+    }
+
+    void OnEnable()
+    {
+        animator.SetBool("IsSelfGrenadeThrown", false);
     }
 
     void Update()
@@ -43,7 +50,9 @@ public class ExplosionController : MonoBehaviour
     IEnumerator ExplodeGrenade()
     {
         isWaitingForDelay = true;
+        animator.SetBool("IsSelfGrenadeThrown", true);
         yield return new WaitForSeconds(GRENADE_DELAY_TIME);
+        animator.SetBool("IsSelfGrenadeThrown", false);
         explosionParticles.Play();
         grenadeExplosionSound.Play();
         isGrenadeThrown = false;

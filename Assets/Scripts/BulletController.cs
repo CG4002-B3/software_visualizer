@@ -81,4 +81,8 @@ public class BulletController : MonoBehaviour
         bulletsRemaining = MAX_NUM_OF_BULLETS;
         isReloading = false;
     }
+
+    public int GetBulletsRemaining() {
+        return bulletsRemaining;
+    }
 }

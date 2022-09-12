@@ -1554,6 +1554,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc6c3cf0e74bf4f1fa9b06a7bd444ade, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MAX_HEALTH: 100
   healthRemaining: 0
   healthSegments:
   - {fileID: 663885974}
@@ -4092,6 +4093,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1425753567}
   - component: {fileID: 1425753568}
+  - component: {fileID: 1425753569}
   m_Layer: 5
   m_Name: HealthBarContainer
   m_TagString: Untagged
@@ -4166,6 +4168,32 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1425753569
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1425753566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 695478c2dc4b8406da207f7f668028d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  healthRemaining: 100
+  healthSegments:
+  - {fileID: 663885974}
+  - {fileID: 589020542}
+  - {fileID: 1372285221}
+  - {fileID: 1630155409}
+  - {fileID: 1143477417}
+  - {fileID: 1204206732}
+  - {fileID: 463830673}
+  - {fileID: 1953114534}
+  - {fileID: 797285642}
+  - {fileID: 76224161}
+  healthPointText: {fileID: 487856403}
+  bulletController: {fileID: 1458959574}
 --- !u!1 &1435232748
 GameObject:
   m_ObjectHideFlags: 0
@@ -4416,6 +4444,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1458959574}
         m_TargetAssemblyTypeName: BulletController, Assembly-CSharp
         m_MethodName: ReduceBullets
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1425753569}
+        m_TargetAssemblyTypeName: OppHealthBarController, Assembly-CSharp
+        m_MethodName: ReduceHealth
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5377,6 +5417,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc6c3cf0e74bf4f1fa9b06a7bd444ade, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  MAX_HEALTH: 100
   healthRemaining: 0
   healthSegments:
   - {fileID: 1165071843}

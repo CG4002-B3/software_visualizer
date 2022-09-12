@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class ExplosionController : MonoBehaviour
 {
-    private int GRENADE_DELAY_TIME = 2;
+    private float GRENADE_DELAY_TIME = 2f;
+    private float GRENADE_PROJECTION_OFFSET = 1f;
 
     public ParticleSystem explosionParticles;
     public AudioSource grenadeExplosionSound;
@@ -51,8 +52,9 @@ public class ExplosionController : MonoBehaviour
     {
         isWaitingForDelay = true;
         animator.SetBool("IsSelfGrenadeThrown", true);
-        yield return new WaitForSeconds(GRENADE_DELAY_TIME);
+        yield return new WaitForSeconds(GRENADE_DELAY_TIME - GRENADE_PROJECTION_OFFSET);
         animator.SetBool("IsSelfGrenadeThrown", false);
+        yield return new WaitForSeconds(GRENADE_PROJECTION_OFFSET);
         explosionParticles.Play();
         grenadeExplosionSound.Play();
         isGrenadeThrown = false;

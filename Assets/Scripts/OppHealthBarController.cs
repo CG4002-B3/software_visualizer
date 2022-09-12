@@ -38,12 +38,12 @@ public class OppHealthBarController : MonoBehaviour
         }
     }
 
-    public void ReduceHealth()
+    public void ReduceHealth(int hpToReduce)
     {
         if (bulletController.GetBulletsRemaining() >= 0)
         {
             Debug.Log("Reducingggg");
-            healthRemaining = Math.Max(healthRemaining - 10, 0);
+            healthRemaining = Math.Max(healthRemaining - hpToReduce, 0);
             if (healthRemaining == 0)
             {
                 healthRemaining = MAX_HEALTH;

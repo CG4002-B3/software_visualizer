@@ -7,10 +7,13 @@ using UnityEngine.UI;
 public class GrenadeController : MonoBehaviour
 {
     private int MAX_NUM_OF_GRENADES = 2;
+    private int GRENADE_DAMAGE = 30;
 
     public int grenadesRemaining;
     public Image[] grenades;
     public ExplosionController explosionController;
+
+    public OppShieldController oppshieldController;
 
     void Update()
     {
@@ -32,6 +35,7 @@ public class GrenadeController : MonoBehaviour
         if (!explosionController.GetIsGrenadeThrown())
         {
             grenadesRemaining = Math.Max(grenadesRemaining - 1, 0);
+            oppshieldController.ReduceShieldHp(GRENADE_DAMAGE);
         }
     }
 

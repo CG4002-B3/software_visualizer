@@ -13,7 +13,7 @@ public class SelfHealthBarController : MonoBehaviour
     public Text healthPointText;
 
     public GrenadeController grenadeController;
-    public ShieldController shieldController;
+    public SelfShieldController selfShieldController;
 
     // Start is called before the first frame update
     void Start()
@@ -47,7 +47,7 @@ public class SelfHealthBarController : MonoBehaviour
         {
             healthRemaining = MAX_HEALTH;
             grenadeController.ResetGrenadesRemaining();
-            shieldController.ResetShieldsRemaining();
+            selfShieldController.ResetShieldsRemaining();
         }
     }
 

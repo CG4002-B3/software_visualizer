@@ -8,6 +8,7 @@ public class BulletController : MonoBehaviour
 {
     private int MAX_NUM_OF_BULLETS = 6;
     private float RELOAD_TIME = 0.5f;
+    private int BULLET_DAMAGE = 10;
 
     private Text bullets;
     private int bulletsRemaining;
@@ -18,6 +19,7 @@ public class BulletController : MonoBehaviour
     public AudioSource reloadingSound;
 
     public ParticleSystem bulletSmoke;
+    public OppShieldController oppshieldController;
 
     private bool isReloading = false;
 
@@ -67,6 +69,7 @@ public class BulletController : MonoBehaviour
         {
             shootingSound.Play();
             bulletSmoke.Play();
+            oppshieldController.ReduceShieldHp(BULLET_DAMAGE);
         }
         bulletsRemaining = Math.Max(bulletsRemaining - 1, -1);
     }

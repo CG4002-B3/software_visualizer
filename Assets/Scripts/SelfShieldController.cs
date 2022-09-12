@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ShieldController : MonoBehaviour
+public class SelfShieldController : MonoBehaviour
 {
     private int MAX_NUM_OF_SHIELDS = 3;
 

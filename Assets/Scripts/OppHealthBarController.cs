@@ -13,6 +13,7 @@ public class OppHealthBarController : MonoBehaviour
     public Text healthPointText;
 
     public BulletController bulletController;
+    public OppShieldController oppShieldController;
 
     // Start is called before the first frame update
     void Start()
@@ -40,10 +41,20 @@ public class OppHealthBarController : MonoBehaviour
 
     public void ReduceHealth(int hpToReduce)
     {
-        if (bulletController.GetBulletsRemaining() >= 0)
+        if (bulletController.GetBulletsRemaining() >= 0
+                && !oppShieldController.GetShouldShowShield())
         {
+            Debug.Log("GetIsShieldResetHalfway: " + oppShieldController.GetIsShieldResetHalfway());
+            if (oppShieldController.GetIsShieldResetHalfway()) {
+                oppShieldController.ResetIsShieldResetHalfway();
+                Debug.Log("GetIsShieldResetHalfway: " + oppShieldController.GetIsShieldResetHalfway());
+                return;
+            }
+
             Debug.Log("Reducingggg");
             healthRemaining = Math.Max(healthRemaining - hpToReduce, 0);
+            Debug.Log("GetIsShieldResetHalfway: " + oppShieldController.GetIsShieldResetHalfway());
+
             if (healthRemaining == 0)
             {
                 healthRemaining = MAX_HEALTH;

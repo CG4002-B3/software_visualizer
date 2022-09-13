@@ -1454,9 +1454,9 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1093249812}
+  - {fileID: 1910530484}
   - {fileID: 168066330}
   - {fileID: 983850928}
-  - {fileID: 1910530484}
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1510,7 +1510,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 150368923}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
@@ -3492,6 +3492,7 @@ MonoBehaviour:
   - {fileID: 913500600}
   - {fileID: 138844134}
   healthPointText: {fileID: 605204676}
+  bulletController: {fileID: 1458959574}
   grenadeController: {fileID: 1251559840}
   selfShieldController: {fileID: 419417575}
   selfShieldOverlayController: {fileID: 150368924}
@@ -3528,7 +3529,7 @@ RectTransform:
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 150368923}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
@@ -4732,18 +4733,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1425753569}
-        m_TargetAssemblyTypeName: OppHealthBarController, Assembly-CSharp
-        m_MethodName: ReduceHealth
-        m_Mode: 3
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 10
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!95 &1453984127
 Animator:
   serializedVersion: 4
@@ -4879,6 +4868,7 @@ MonoBehaviour:
   shootingSound: {fileID: 1670135860}
   reloadingSound: {fileID: 1174911960}
   bulletSmoke: {fileID: 885239098}
+  oppHealthBarController: {fileID: 0}
   oppshieldController: {fileID: 1984294611}
 --- !u!1 &1537542407
 GameObject:
@@ -5089,9 +5079,33 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 1670135860}
+        m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 924582164}
         m_TargetAssemblyTypeName: SelfHealthBarController, Assembly-CSharp
         m_MethodName: ReduceHealth
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 10
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 150368924}
+        m_TargetAssemblyTypeName: SelfShieldOverlayController, Assembly-CSharp
+        m_MethodName: ReduceShieldHp
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5984,7 +5998,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 150368923}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}

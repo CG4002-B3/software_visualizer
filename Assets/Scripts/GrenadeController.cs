@@ -12,7 +12,7 @@ public class GrenadeController : MonoBehaviour
     public int grenadesRemaining;
     public Image[] grenades;
     public ExplosionController explosionController;
-
+    public OppHealthBarController oppHealthBarController;
     public OppShieldController oppshieldController;
 
     void Update()
@@ -36,6 +36,7 @@ public class GrenadeController : MonoBehaviour
         {
             grenadesRemaining = Math.Max(grenadesRemaining - 1, 0);
             oppshieldController.ReduceShieldHp(GRENADE_DAMAGE);
+            oppHealthBarController.ReduceHealth(GRENADE_DAMAGE);
         }
     }
 

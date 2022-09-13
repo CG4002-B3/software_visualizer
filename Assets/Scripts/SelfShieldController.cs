@@ -10,7 +10,7 @@ public class SelfShieldController : MonoBehaviour
 
     public int shieldsRemaining;
     public Image[] shields;
-    public ShieldOverlayController shieldOverlayController;
+    public SelfShieldOverlayController selfShieldOverlayController;
 
     // Start is called before the first frame update
     void Start()
@@ -36,7 +36,7 @@ public class SelfShieldController : MonoBehaviour
 
     public void ReduceShield()
     {
-        if (!shieldOverlayController.GetIsShowingShield())
+        if (!selfShieldOverlayController.GetIsShowingShield())
         {
             shieldsRemaining = Math.Max(shieldsRemaining - 1, 0);
         }

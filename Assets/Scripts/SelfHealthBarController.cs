@@ -12,6 +12,7 @@ public class SelfHealthBarController : MonoBehaviour
     public Image[] healthSegments;
     public Text healthPointText;
 
+    public BulletController bulletController;
     public GrenadeController grenadeController;
     public SelfShieldController selfShieldController;
 
@@ -59,6 +60,7 @@ public class SelfHealthBarController : MonoBehaviour
             if (healthRemaining == 0)
             {
                 healthRemaining = MAX_HEALTH;
+                bulletController.ResetBulletsRemaining();
                 grenadeController.ResetGrenadesRemaining();
                 selfShieldController.ResetShieldsRemaining();
             }

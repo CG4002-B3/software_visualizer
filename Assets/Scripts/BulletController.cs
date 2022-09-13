@@ -19,6 +19,8 @@ public class BulletController : MonoBehaviour
     public AudioSource reloadingSound;
 
     public ParticleSystem bulletSmoke;
+
+    public OppHealthBarController oppHealthBarController;
     public OppShieldController oppshieldController;
 
     private bool isReloading = false;
@@ -70,6 +72,7 @@ public class BulletController : MonoBehaviour
             shootingSound.Play();
             bulletSmoke.Play();
             oppshieldController.ReduceShieldHp(BULLET_DAMAGE);
+            oppHealthBarController.ReduceHealth(BULLET_DAMAGE);
         }
         bulletsRemaining = Math.Max(bulletsRemaining - 1, -1);
     }
@@ -87,5 +90,10 @@ public class BulletController : MonoBehaviour
 
     public int GetBulletsRemaining() {
         return bulletsRemaining;
+    }
+
+    public void ResetBulletsRemaining()
+    {
+        bulletsRemaining = MAX_NUM_OF_BULLETS;
     }
 }

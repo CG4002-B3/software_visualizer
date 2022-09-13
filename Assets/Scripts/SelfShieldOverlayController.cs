@@ -1,14 +1,19 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ShieldOverlayController : MonoBehaviour
+public class SelfShieldOverlayController : MonoBehaviour
 {
     private float SHIELD_DELAY = 10f;
+    private int MAX_SHIELD_HP = 30;
 
     public Image shieldOverlay;
     public Text shieldCountdown;
+
+    private int shieldHp;
+    private bool isShieldResetHalfway;
 
     private bool shouldShowShield;
     private bool isShowingShield;
@@ -20,6 +25,8 @@ public class ShieldOverlayController : MonoBehaviour
         shouldShowShield = false;
         isShowingShield = false;
         shieldTimeRemaining = SHIELD_DELAY;
+        shieldHp = MAX_SHIELD_HP;
+        isShieldResetHalfway = false;
 
         shieldOverlay.enabled = shouldShowShield;
     }
@@ -52,6 +59,7 @@ public class ShieldOverlayController : MonoBehaviour
         {
             shieldTimeRemaining = SHIELD_DELAY;
             shouldShowShield = true;
+            isShieldResetHalfway = false;
         }
     }
 
@@ -59,8 +67,25 @@ public class ShieldOverlayController : MonoBehaviour
     {
         isShowingShield = true;
         yield return new WaitForSeconds(SHIELD_DELAY);
+        isShieldResetHalfway = false;
         shouldShowShield = false;
         isShowingShield = false;
+    }
+
+    public void ReduceShieldHp(int shieldHpToReduce)
+    {
+        if (isShowingShield)
+        {
+            shieldHp = Math.Max(shieldHp - shieldHpToReduce, 0);
+            if (shieldHp == 0)
+            {
+                isShieldResetHalfway = true;
+                shouldShowShield = false;
+                isShowingShield = false;
+                shieldHp = MAX_SHIELD_HP;
+                shieldTimeRemaining = SHIELD_DELAY;
+            }
+        }
     }
 
     void DisplayCountdown(float shieldTimeRemaining)
@@ -80,5 +105,15 @@ public class ShieldOverlayController : MonoBehaviour
     public bool GetIsShowingShield()
     {
         return isShowingShield;
+    }
+
+    public bool GetIsShieldResetHalfway()
+    {
+        return isShieldResetHalfway;
+    }
+
+    public void ResetIsShieldResetHalfway()
+    {
+        isShieldResetHalfway = false;
     }
 }

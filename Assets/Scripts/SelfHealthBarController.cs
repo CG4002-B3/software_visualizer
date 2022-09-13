@@ -15,6 +15,9 @@ public class SelfHealthBarController : MonoBehaviour
     public GrenadeController grenadeController;
     public SelfShieldController selfShieldController;
 
+    public SelfShieldOverlayController selfShieldOverlayController;
+    public OppGrenadeExplosionController oppGrenadeExplosionController;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -39,15 +42,26 @@ public class SelfHealthBarController : MonoBehaviour
         }
     }
 
-    public void ReduceHealth()
+    public void ReduceHealth(int hpToReduce)
     {
-        Debug.Log("Reducingggg");
-        healthRemaining = Math.Max(healthRemaining - 10, 0);
-        if (healthRemaining == 0)
+        if (!oppGrenadeExplosionController.GetIsGrenadeThrown()
+                && !selfShieldOverlayController.GetIsShowingShield())
         {
-            healthRemaining = MAX_HEALTH;
-            grenadeController.ResetGrenadesRemaining();
-            selfShieldController.ResetShieldsRemaining();
+            if (selfShieldOverlayController.GetIsShieldResetHalfway())
+            {
+                selfShieldOverlayController.ResetIsShieldResetHalfway();
+                return;
+            }
+
+            Debug.Log("Reducingggg");
+            healthRemaining = Math.Max(healthRemaining - hpToReduce, 0);
+
+            if (healthRemaining == 0)
+            {
+                healthRemaining = MAX_HEALTH;
+                grenadeController.ResetGrenadesRemaining();
+                selfShieldController.ResetShieldsRemaining();
+            }
         }
     }
 

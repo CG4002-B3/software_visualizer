@@ -16,6 +16,8 @@ public class OppHealthBarController : MonoBehaviour
     public ExplosionController explosionController;
     public OppShieldController oppShieldController;
 
+    public SelfScoreController selfScoreController;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -57,6 +59,7 @@ public class OppHealthBarController : MonoBehaviour
             if (healthRemaining == 0)
             {
                 healthRemaining = MAX_HEALTH;
+                selfScoreController.IncrementNumOfKills();
             }
         }
     }

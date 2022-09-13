@@ -19,6 +19,8 @@ public class SelfHealthBarController : MonoBehaviour
     public SelfShieldOverlayController selfShieldOverlayController;
     public OppGrenadeExplosionController oppGrenadeExplosionController;
 
+    public SelfScoreController selfScoreController;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -63,6 +65,7 @@ public class SelfHealthBarController : MonoBehaviour
                 bulletController.ResetBulletsRemaining();
                 grenadeController.ResetGrenadesRemaining();
                 selfShieldController.ResetShieldsRemaining();
+                selfScoreController.IncrementNumOfDeaths();
             }
         }
     }

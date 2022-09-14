@@ -13,6 +13,7 @@ public class SelfShieldOverlayController : MonoBehaviour
     public Text shieldCountdown;
 
     private int shieldHp;
+    private int hpToReduceAfterShieldProtection;
     private bool isShieldResetHalfway;
     private bool isNextShieldReady;
 
@@ -29,6 +30,7 @@ public class SelfShieldOverlayController : MonoBehaviour
         shieldHp = MAX_SHIELD_HP;
         isShieldResetHalfway = false;
         isNextShieldReady = true;
+        hpToReduceAfterShieldProtection = 0;
 
         shieldOverlay.enabled = shouldShowShield;
     }
@@ -80,6 +82,7 @@ public class SelfShieldOverlayController : MonoBehaviour
     {
         if (isShowingShield)
         {
+            hpToReduceAfterShieldProtection = Math.Min(shieldHp - shieldHpToReduce, 0);
             shieldHp = Math.Max(shieldHp - shieldHpToReduce, 0);
             if (shieldHp == 0)
             {
@@ -124,10 +127,16 @@ public class SelfShieldOverlayController : MonoBehaviour
     public void ResetIsNextShieldReady()
     {
         isNextShieldReady = true;
+        hpToReduceAfterShieldProtection = 0;
     }
 
     public bool GetIsNextShieldReady()
     {
         return isNextShieldReady;
+    }
+
+    public int GetHpToReduceAfterShieldProtection()
+    {
+        return hpToReduceAfterShieldProtection;
     }
 }

@@ -52,7 +52,18 @@ public class SelfHealthBarController : MonoBehaviour
         {
             if (selfShieldOverlayController.GetIsShieldResetHalfway())
             {
+                healthRemaining = Math.Max(healthRemaining +
+                        selfShieldOverlayController.GetHpToReduceAfterShieldProtection(), 0);
                 selfShieldOverlayController.ResetIsShieldResetHalfway();
+
+                if (healthRemaining == 0)
+                {
+                    healthRemaining = MAX_HEALTH;
+                    bulletController.ResetBulletsRemaining();
+                    grenadeController.ResetGrenadesRemaining();
+                    selfShieldController.ResetShieldsRemaining();
+                    selfScoreController.IncrementNumOfDeaths();
+                }
                 return;
             }
 

@@ -14,6 +14,7 @@ public class SelfShieldOverlayController : MonoBehaviour
 
     private int shieldHp;
     private bool isShieldResetHalfway;
+    private bool isNextShieldReady;
 
     private bool shouldShowShield;
     private bool isShowingShield;
@@ -27,6 +28,7 @@ public class SelfShieldOverlayController : MonoBehaviour
         shieldTimeRemaining = SHIELD_DELAY;
         shieldHp = MAX_SHIELD_HP;
         isShieldResetHalfway = false;
+        isNextShieldReady = true;
 
         shieldOverlay.enabled = shouldShowShield;
     }
@@ -55,7 +57,7 @@ public class SelfShieldOverlayController : MonoBehaviour
 
     public void ActivateShield()
     {
-        if (!isShowingShield)
+        if (!isShowingShield & isNextShieldReady)
         {
             shieldTimeRemaining = SHIELD_DELAY;
             shouldShowShield = true;
@@ -65,11 +67,13 @@ public class SelfShieldOverlayController : MonoBehaviour
 
     IEnumerator ShowShield()
     {
+        isNextShieldReady = false;
         isShowingShield = true;
         yield return new WaitForSeconds(SHIELD_DELAY);
         isShieldResetHalfway = false;
         shouldShowShield = false;
         isShowingShield = false;
+        isNextShieldReady = true;
     }
 
     public void ReduceShieldHp(int shieldHpToReduce)
@@ -115,5 +119,15 @@ public class SelfShieldOverlayController : MonoBehaviour
     public void ResetIsShieldResetHalfway()
     {
         isShieldResetHalfway = false;
+    }
+
+    public void ResetIsNextShieldReady()
+    {
+        isNextShieldReady = true;
+    }
+
+    public bool GetIsNextShieldReady()
+    {
+        return isNextShieldReady;
     }
 }

@@ -36,7 +36,8 @@ public class SelfShieldController : MonoBehaviour
 
     public void ReduceShield()
     {
-        if (!selfShieldOverlayController.GetIsShowingShield())
+        if (!selfShieldOverlayController.GetIsShowingShield()
+                && selfShieldOverlayController.GetIsNextShieldReady())
         {
             shieldsRemaining = Math.Max(shieldsRemaining - 1, 0);
         }
@@ -45,5 +46,6 @@ public class SelfShieldController : MonoBehaviour
     public void ResetShieldsRemaining()
     {
         shieldsRemaining = MAX_NUM_OF_SHIELDS;
+        selfShieldOverlayController.ResetIsNextShieldReady();
     }
 }

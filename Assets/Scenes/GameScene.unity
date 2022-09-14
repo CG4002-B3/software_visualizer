@@ -5435,9 +5435,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 924582164}
-        m_TargetAssemblyTypeName: SelfHealthBarController, Assembly-CSharp
-        m_MethodName: ReduceHealth
+      - m_Target: {fileID: 150368924}
+        m_TargetAssemblyTypeName: SelfShieldOverlayController, Assembly-CSharp
+        m_MethodName: ReduceShieldHp
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5447,9 +5447,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 150368924}
-        m_TargetAssemblyTypeName: SelfShieldOverlayController, Assembly-CSharp
-        m_MethodName: ReduceShieldHp
+      - m_Target: {fileID: 924582164}
+        m_TargetAssemblyTypeName: SelfHealthBarController, Assembly-CSharp
+        m_MethodName: ReduceHealth
         m_Mode: 3
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

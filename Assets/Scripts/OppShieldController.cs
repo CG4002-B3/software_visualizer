@@ -15,6 +15,8 @@ public class OppShieldController : MonoBehaviour
     private bool isShieldResetHalfway;
     private float shieldTimeRemaining;
     private int shieldHp;
+    private bool isNextShieldReady;
+    private bool isShowingShield;
 
     // Start is called before the first frame update
     void Start()
@@ -24,6 +26,8 @@ public class OppShieldController : MonoBehaviour
         isShieldResetHalfway = false;
         shieldTimeRemaining = SHIELD_DELAY;
         shieldHp = MAX_SHIELD_HP;
+        isNextShieldReady = true;
+        isShowingShield = false;
     }
 
     // Update is called once per frame
@@ -32,28 +36,40 @@ public class OppShieldController : MonoBehaviour
         Debug.Log("Opponent Shield HP: " + shieldHp);
         oppShieldPrefab.SetActive(shouldShowShield);
 
-        if (shouldShowShield){
+        if (isShowingShield)
+        {
             if (shieldTimeRemaining >= 0)
             {
                 shieldTimeRemaining -= Time.deltaTime;
             }
-            else
-            {
-                shouldShowShield = false;
-                shieldTimeRemaining = SHIELD_DELAY;
-                shieldHp = MAX_SHIELD_HP;
-                isShieldResetHalfway = false;
-            }
+            return;
+        }
+        if (shouldShowShield)
+        {
+            StartCoroutine(ShowShield());
+            return;
         }
     }
 
     public void ActivateShield()
     {
-        if (!shouldShowShield)
+        if (!isShowingShield & isNextShieldReady)
         {
+            shieldTimeRemaining = SHIELD_DELAY;
             shouldShowShield = true;
             isShieldResetHalfway = false;
         }
+    }
+
+    IEnumerator ShowShield()
+    {
+        isNextShieldReady = false;
+        isShowingShield = true;
+        yield return new WaitForSeconds(SHIELD_DELAY);
+        isShieldResetHalfway = false;
+        shouldShowShield = false;
+        isShowingShield = false;
+        isNextShieldReady = true;
     }
 
     public void ReduceShieldHp(int shieldHpToReduce)
@@ -65,6 +81,7 @@ public class OppShieldController : MonoBehaviour
             {
                 isShieldResetHalfway = true;
                 shouldShowShield = false;
+                isShowingShield = false;
                 shieldHp = MAX_SHIELD_HP;
                 shieldTimeRemaining = SHIELD_DELAY;
             }
@@ -84,5 +101,15 @@ public class OppShieldController : MonoBehaviour
     public void ResetIsShieldResetHalfway()
     {
         isShieldResetHalfway = false;
+    }
+
+    public void ResetIsNextShieldReady()
+    {
+        isNextShieldReady = true;
+    }
+
+    public bool GetIsNextShieldReady()
+    {
+        return isNextShieldReady;
     }
 }

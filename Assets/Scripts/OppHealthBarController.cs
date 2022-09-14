@@ -44,12 +44,20 @@ public class OppHealthBarController : MonoBehaviour
 
     public void ReduceHealth(int hpToReduce)
     {
-        if (bulletController.GetBulletsRemaining() >= 0
+        if (bulletController.GetBulletsRemaining() > 0
                 && !explosionController.GetIsGrenadeThrown()
                 && !oppShieldController.GetShouldShowShield())
         {
             if (oppShieldController.GetIsShieldResetHalfway()) {
+                healthRemaining = Math.Max(healthRemaining +
+                        oppShieldController.GetHpToReduceAfterShieldProtection(), 0);
                 oppShieldController.ResetIsShieldResetHalfway();
+
+                if (healthRemaining == 0)
+                {
+                    healthRemaining = MAX_HEALTH;
+                    selfScoreController.IncrementNumOfKills();
+                }
                 return;
             }
 

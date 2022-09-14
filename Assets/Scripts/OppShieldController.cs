@@ -15,6 +15,7 @@ public class OppShieldController : MonoBehaviour
     private bool isShieldResetHalfway;
     private float shieldTimeRemaining;
     private int shieldHp;
+    private int hpToReduceAfterShieldProtection;
     private bool isNextShieldReady;
     private bool isShowingShield;
 
@@ -28,6 +29,7 @@ public class OppShieldController : MonoBehaviour
         shieldHp = MAX_SHIELD_HP;
         isNextShieldReady = true;
         isShowingShield = false;
+        hpToReduceAfterShieldProtection = 0;
     }
 
     // Update is called once per frame
@@ -76,6 +78,7 @@ public class OppShieldController : MonoBehaviour
     {
         if (shouldShowShield)
         {
+            hpToReduceAfterShieldProtection = Math.Min(shieldHp - shieldHpToReduce, 0);
             shieldHp = Math.Max(shieldHp - shieldHpToReduce, 0);
             if (shieldHp == 0)
             {
@@ -106,10 +109,16 @@ public class OppShieldController : MonoBehaviour
     public void ResetIsNextShieldReady()
     {
         isNextShieldReady = true;
+        hpToReduceAfterShieldProtection = 0;
     }
 
     public bool GetIsNextShieldReady()
     {
         return isNextShieldReady;
+    }
+
+    public int GetHpToReduceAfterShieldProtection()
+    {
+        return hpToReduceAfterShieldProtection;
     }
 }

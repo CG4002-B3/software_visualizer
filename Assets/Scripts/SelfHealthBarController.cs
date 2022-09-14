@@ -47,7 +47,6 @@ public class SelfHealthBarController : MonoBehaviour
 
     public void ReduceHealth(int hpToReduce)
     {
-        Debug.Log("Shield Showing? " + selfShieldOverlayController.GetIsShowingShield());
         if (!oppGrenadeExplosionController.GetIsGrenadeThrown()
                 && !selfShieldOverlayController.GetIsShowingShield())
         {

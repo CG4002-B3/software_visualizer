@@ -49,8 +49,12 @@ public class SelfShieldController : MonoBehaviour
         selfShieldOverlayController.ResetIsNextShieldReady();
     }
 
-    public void SetShieldRemaining(int shields)
+    public void SetShieldRemaining(int shields, bool isShieldValid)
     {
         shieldsRemaining = shields;
+        if (isShieldValid)
+        {
+            selfShieldOverlayController.ActivateShield();
+        }
     }
 }

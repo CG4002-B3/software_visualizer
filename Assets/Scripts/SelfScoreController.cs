@@ -34,4 +34,9 @@ public class SelfScoreController : MonoBehaviour
     {
         numOfDeaths++;
     }
+
+    public void SetNumKills(int kills)
+    {
+        numOfKills = kills;
+    }
 }

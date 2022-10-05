@@ -117,9 +117,18 @@ public class UnityMqttClient : M2MqttUnityClient
         string selfAction = msgDict["p1"]["action"];
         bool selfActionValid = int.Parse(msgDict["p1"]["action_valid"]) == 1;
 
+        bool selfIsValidGrenade = selfAction == "grenade" && selfActionValid;
+
+        if (selfIsValidGrenade)
+        {
+            selfGrenadeController.SetGrenadesRemaining(int.Parse(msgDict["p1"]["grenades"]), selfIsValidGrenade);
+
+            msgPublish = selfGrenadeController.GetIsOppFound()? "{grenade_throw: 1}" : "{grenade_throw: 0}";
+            Publish();
+        }
+
         bool selfIsValidReload = selfAction == "reload" && selfActionValid;
         bool selfIsValidShoot = selfAction == "shoot" && selfActionValid;
-        bool selfIsValidGrenade = selfAction == "grenade" && selfActionValid;
         bool selfIsValidShield = selfAction == "shield" && selfActionValid;
 
         if (selfIsValidReload)

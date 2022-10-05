@@ -7,6 +7,7 @@ using uPLibrary.Networking.M2Mqtt;
 using uPLibrary.Networking.M2Mqtt.Messages;
 using M2MqttUnity;
 using TMPro;
+using SimpleJSON;
 
 public class UnityMqttClient : M2MqttUnityClient
 {
@@ -14,6 +15,13 @@ public class UnityMqttClient : M2MqttUnityClient
     // UI Elements
     public TextMeshProUGUI status;
     public TextMeshProUGUI messageText;
+
+    public BulletController selfBulletController;
+    public GrenadeController selfGrenadeController;
+    public SelfShieldController selfShieldController;
+    public SelfScoreController selfScoreController;
+
+    public OppHealthBarController oppHealthBarController;
 
     // Broker Configurations
     public bool autoTest = false;
@@ -101,15 +109,28 @@ public class UnityMqttClient : M2MqttUnityClient
     protected override void DecodeMessage(string topic, byte[] message)
     {
         string msg = System.Text.Encoding.UTF8.GetString(message);
+        var msgDict = JSON.Parse(msg);
         Debug.Log("[MQTT RECEIVED] Received new message: " + msg);
         SetStatus("Received");
         StoreMessage(msg);
 
-        // grenade query
-        if (msg == "grenade")
+        string selfAction = msgDict["p1"]["action"];
+        bool selfActionValid = int.Parse(msgDict["p1"]["action_valid"]) == 1;
+
+        bool isValidReload = selfAction == "reload" && selfActionValid;
+        bool isValidShoot = selfAction == "shoot" && selfActionValid;
+
+        if (isValidReload)
         {
-            TestPublish();
+            selfBulletController.StartReloading();
         }
+
+        selfBulletController.SetBulletsRemaining(int.Parse(msgDict["p1"]["bullets"]), isValidShoot);
+        selfGrenadeController.SetGrenadesRemaining(int.Parse(msgDict["p1"]["grenades"]));
+        selfShieldController.SetShieldRemaining(int.Parse(msgDict["p1"]["num_shield"]));
+        selfScoreController.SetNumKills(int.Parse(msgDict["p2"]["num_deaths"]));
+
+        oppHealthBarController.SetHealthRemaining(int.Parse(msgDict["p2"]["hp"]));
     }
 
     public void DisconnectButton()

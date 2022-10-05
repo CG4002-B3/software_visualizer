@@ -48,4 +48,9 @@ public class SelfShieldController : MonoBehaviour
         shieldsRemaining = MAX_NUM_OF_SHIELDS;
         selfShieldOverlayController.ResetIsNextShieldReady();
     }
+
+    public void SetShieldRemaining(int shields)
+    {
+        shieldsRemaining = shields;
+    }
 }

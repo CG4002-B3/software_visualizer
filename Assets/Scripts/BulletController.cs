@@ -24,6 +24,7 @@ public class BulletController : MonoBehaviour
     public OppShieldController oppshieldController;
 
     private bool isReloading = false;
+    private bool startReloading = false;
 
     // Start is called before the first frame update
     void Start()
@@ -42,23 +43,23 @@ public class BulletController : MonoBehaviour
     {
         animator.SetBool("Reloading", false);
         isReloading = false;
+        startReloading = false;
     }
 
     // Update is called once per frame
     void Update()
     {
+        bullets.text = bulletsRemaining.ToString() + " / " + MAX_NUM_OF_BULLETS;
         if (isReloading)
         {
             return;
         }
 
-        if (bulletsRemaining <= -1)
+        if (startReloading)
         {
             StartCoroutine(Reload());
             return;
         }
-
-        bullets.text = bulletsRemaining.ToString() + " / " + MAX_NUM_OF_BULLETS;
     }
 
     public void ReduceBullets()
@@ -84,8 +85,8 @@ public class BulletController : MonoBehaviour
         reloadingSound.Play();
         yield return new WaitForSeconds(RELOAD_TIME);
         animator.SetBool("Reloading", false);
-        bulletsRemaining = MAX_NUM_OF_BULLETS;
         isReloading = false;
+        startReloading = false;
     }
 
     public int GetBulletsRemaining() {
@@ -95,5 +96,21 @@ public class BulletController : MonoBehaviour
     public void ResetBulletsRemaining()
     {
         bulletsRemaining = MAX_NUM_OF_BULLETS;
+    }
+
+    public void SetBulletsRemaining(int bullets, bool isValidShoot)
+    {
+        if (isValidShoot)
+        {
+            shootingSound.Play();
+            bulletSmoke.Play();
+        }
+
+        bulletsRemaining = bullets;
+    }
+
+    public void StartReloading()
+    {
+        startReloading = true;
     }
 }

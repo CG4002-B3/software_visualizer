@@ -60,4 +60,9 @@ public class GrenadeController : MonoBehaviour
     {
         isOppFound = oppFoundValue;
     }
+
+    public void SetGrenadesRemaining(int grenades)
+    {
+        grenadesRemaining = grenades;
+    }
 }

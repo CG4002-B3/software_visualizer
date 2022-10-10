@@ -127,6 +127,7 @@ public class UnityMqttClient : M2MqttUnityClient
         if (selfAction == "logout")
         {
             invalidActionFeedbackController.SetFeedback("Game Over");
+            return;
         }
 
         if (!selfActionValid)

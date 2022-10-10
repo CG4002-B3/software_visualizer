@@ -124,6 +124,11 @@ public class UnityMqttClient : M2MqttUnityClient
         bool selfIsValidShoot = selfAction == "shoot" && selfActionValid;
         bool selfIsValidShield = selfAction == "shield" && selfActionValid;
 
+        if (selfAction == "logout")
+        {
+            invalidActionFeedbackController.SetFeedback("Game Over");
+        }
+
         if (!selfActionValid)
         {
             if (selfAction == "grenade" && !shouldUpdateHp)

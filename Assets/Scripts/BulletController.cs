@@ -109,8 +109,11 @@ public class BulletController : MonoBehaviour
         bulletsRemaining = bullets;
     }
 
-    public void StartReloading()
+    public void StartReloading(bool isValidReload)
     {
-        startReloading = true;
+        if (isValidReload)
+        {
+            startReloading = true;
+        }
     }
 }

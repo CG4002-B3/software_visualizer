@@ -126,7 +126,7 @@ public class UnityMqttClient : M2MqttUnityClient
 
         if (!selfActionValid)
         {
-            if (selfAction == "grenade")
+            if (selfAction == "grenade" && !shouldUpdateHp)
             {
                 invalidActionFeedbackController.SetFeedback("Invalid Grenade Action");
             }

@@ -115,6 +115,17 @@ public class UnityMqttClient : M2MqttUnityClient
         SetStatus("Received");
         StoreMessage(msg);
 
+        if (int.Parse(msgDict["game_engine_update"]) == 1)
+        {
+            selfBulletController.SetBulletsRemaining(int.Parse(msgDict["p1"]["bullets"]), false);
+            selfGrenadeController.SetGrenadesRemaining(int.Parse(msgDict["p1"]["grenades"]), false);
+            selfShieldController.SetShieldRemaining(int.Parse(msgDict["p1"]["num_shield"]), false);
+            selfScoreController.SetNumKills(int.Parse(msgDict["p2"]["num_deaths"]));
+
+            oppHealthBarController.SetHealthRemaining(int.Parse(msgDict["p2"]["hp"]));
+            return;
+        }
+
         string selfAction = msgDict["p1"]["action"];
         bool selfActionValid = int.Parse(msgDict["p1"]["action_valid"]) == 1;
         bool shouldUpdateHp = int.Parse(msgDict["p1"]["should_update_hp"]) == 1;

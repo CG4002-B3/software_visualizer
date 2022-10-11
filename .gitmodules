@@ -1,0 +1,3 @@
+[submodule "Assets/SimpleJSON"]
+	path = Assets/SimpleJSON
+	url = git@github.com:Bunny83/SimpleJSON.git

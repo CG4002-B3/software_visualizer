@@ -12,12 +12,6 @@ public class SelfShieldController : MonoBehaviour
     public Image[] shields;
     public SelfShieldOverlayController selfShieldOverlayController;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
     // Update is called once per frame
     void Update()
     {

@@ -22,6 +22,11 @@ public class InvalidActionFeedbackController : MonoBehaviour
     {
         invalidActionFeedback.text = feedback;
 
+        if (invalidActionFeedback.text == "Game Over")
+        {
+            return;
+        }
+
         if (showingFeedback)
         {
             return;

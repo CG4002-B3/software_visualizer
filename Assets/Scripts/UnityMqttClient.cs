@@ -31,6 +31,8 @@ public class UnityMqttClient : M2MqttUnityClient
     public string msgPublish = "{grenade_throw: 1}";
     public List<string> eventMessages = new List<string>();
 
+    private bool checkingGrenadeHit = false;
+
     public void TestPublish()
     {
         client.Publish(topicPublish, System.Text.Encoding.UTF8.GetBytes(msgPublish), MqttMsgBase.QOS_LEVEL_EXACTLY_ONCE, false);
@@ -132,7 +134,7 @@ public class UnityMqttClient : M2MqttUnityClient
 
         bool selfIsValidGrenade = selfAction == "grenade" && selfActionValid;
         bool selfIsValidReload = selfAction == "reload" && selfActionValid;
-        bool selfIsValidShoot = selfAction == "shoot" && selfActionValid;
+        bool selfIsValidShoot = selfAction == "shoot" && int.Parse(msgDict["p1"]["bullets"]) > 0;
         bool selfIsValidShield = selfAction == "shield" && selfActionValid;
 
         if (selfAction == "logout")
@@ -143,7 +145,7 @@ public class UnityMqttClient : M2MqttUnityClient
 
         if (!selfActionValid)
         {
-            if (selfAction == "grenade" && !shouldUpdateHp)
+            if (selfAction == "grenade" && shouldUpdateHp && !checkingGrenadeHit)
             {
                 invalidActionFeedbackController.SetFeedback("Invalid Grenade Action");
             }
@@ -151,9 +153,9 @@ public class UnityMqttClient : M2MqttUnityClient
             {
                 invalidActionFeedbackController.SetFeedback("Invalid Reload Action");
             }
-            else if (selfAction == "shoot")
+            else if (selfAction == "shoot" && int.Parse(msgDict["p1"]["bullets"]) == 0)
             {
-                invalidActionFeedbackController.SetFeedback("Invalid Shoot Action");
+                invalidActionFeedbackController.SetFeedback("Out of Bullets");
             }
             else if (selfAction == "shield")
             {
@@ -165,9 +167,15 @@ public class UnityMqttClient : M2MqttUnityClient
             }
         }
 
-        if (!shouldUpdateHp && selfIsValidGrenade)
+        if (selfAction == "grenade" && checkingGrenadeHit)
         {
-            selfGrenadeController.SetGrenadesRemaining(int.Parse(msgDict["p1"]["grenades"]), selfIsValidGrenade);
+            checkingGrenadeHit = false;
+        }
+
+        if (selfIsValidGrenade && !shouldUpdateHp)
+        {
+            checkingGrenadeHit = true;
+            selfGrenadeController.SetGrenadesRemaining(int.Parse(msgDict["p1"]["grenades"]) - 1, selfIsValidGrenade);
 
             msgPublish = selfGrenadeController.GetIsOppFound()? "{\"grenade_throw\": 1}" : "{\"grenade_throw\": 0}";
             Debug.Log("[MQTT PUBLISH] Created message " + topicPublish);
@@ -176,10 +184,10 @@ public class UnityMqttClient : M2MqttUnityClient
             return;
         }
 
-        selfBulletController.StartReloading(selfIsValidReload);
         selfBulletController.SetBulletsRemaining(int.Parse(msgDict["p1"]["bullets"]), selfIsValidShoot);
         selfGrenadeController.SetGrenadesRemaining(int.Parse(msgDict["p1"]["grenades"]), false);
         selfShieldController.SetShieldRemaining(int.Parse(msgDict["p1"]["num_shield"]), selfIsValidShield);
+        selfBulletController.StartReloading(selfIsValidReload);
         selfScoreController.SetNumKills(int.Parse(msgDict["p2"]["num_deaths"]));
 
         oppHealthBarController.SetHealthRemaining(int.Parse(msgDict["p2"]["hp"]));

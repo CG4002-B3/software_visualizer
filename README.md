@@ -3,7 +3,7 @@
 ## Prerequisites
 * Unity 2021.3.8f1
     * You may want to download Unity Hub first [here](https://unity3d.com/get-unity/download)
-* Git large
+* Git large files
 
 ## Setting Up the Environment
 1. Clone the repo recursively

@@ -211,6 +211,9 @@ public class UnityMqttClient : M2MqttUnityClient
     {
         base.Update();
 
+        status.text = PlayerChoiceController.getSelfId().ToString();
+        messageText.text = PlayerChoiceController.getOppId().ToString();
+
         // process message
         if (eventMessages.Count > 0)
         {

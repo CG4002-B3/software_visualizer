@@ -136,6 +136,7 @@ GameObject:
   - component: {fileID: 150368921}
   - component: {fileID: 150368920}
   - component: {fileID: 150368924}
+  - component: {fileID: 150368925}
   m_Layer: 5
   m_Name: StartSceneCanvas
   m_TagString: Untagged
@@ -239,6 +240,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 50a54df3b74a64ef3852ca3c1325b29d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &150368925
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 150368919}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9976ed13f79d4ab69c633ce8fa60f8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &560064217
@@ -535,6 +548,30 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 150368925}
+        m_TargetAssemblyTypeName: PlayerChoiceController, Assembly-CSharp
+        m_MethodName: setSelfId
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 150368925}
+        m_TargetAssemblyTypeName: PlayerChoiceController, Assembly-CSharp
+        m_MethodName: setOppId
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 808026273}
         m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
         m_MethodName: Play
@@ -919,6 +956,30 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
+      - m_Target: {fileID: 150368925}
+        m_TargetAssemblyTypeName: PlayerChoiceController, Assembly-CSharp
+        m_MethodName: setSelfId
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 150368925}
+        m_TargetAssemblyTypeName: PlayerChoiceController, Assembly-CSharp
+        m_MethodName: setOppId
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
       - m_Target: {fileID: 808026273}
         m_TargetAssemblyTypeName: UnityEngine.AudioSource, UnityEngine
         m_MethodName: Play

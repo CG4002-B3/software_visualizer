@@ -100,7 +100,7 @@ public class BulletController : MonoBehaviour
 
     public void SetBulletsRemaining(int bullets, bool isValidShoot)
     {
-        if (isValidShoot)
+        if (isValidShoot || (bulletsRemaining == 1 && bullets == 0))
         {
             shootingSound.Play();
             bulletSmoke.Play();

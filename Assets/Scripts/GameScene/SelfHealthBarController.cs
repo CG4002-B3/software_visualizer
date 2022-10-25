@@ -85,4 +85,9 @@ public class SelfHealthBarController : MonoBehaviour
     {
         return healthRemaining;
     }
+
+    public void SetHealthRemaining(int hp)
+    {
+        healthRemaining = hp;
+    }
 }

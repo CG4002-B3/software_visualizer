@@ -32,6 +32,8 @@ public class UnityMqttClient : M2MqttUnityClient
     public List<string> eventMessages = new List<string>();
 
     private bool checkingGrenadeHit = false;
+    private string selfIdString;
+    private string oppIdString;
 
     public void TestPublish()
     {
@@ -211,8 +213,10 @@ public class UnityMqttClient : M2MqttUnityClient
     {
         base.Update();
 
-        status.text = PlayerChoiceController.getSelfId().ToString();
-        messageText.text = PlayerChoiceController.getOppId().ToString();
+        selfIdString = PlayerChoiceController.getSelfId() == 1 ? "p1" : "p2";
+        oppIdString = PlayerChoiceController.getOppId() == 1 ? "p1" : "p2";
+        status.text = selfIdString;
+        messageText.text = oppIdString;
 
         // process message
         if (eventMessages.Count > 0)

@@ -207,11 +207,33 @@ public class UnityMqttClient : M2MqttUnityClient
             checkingGrenadeHit = true;
             selfGrenadeController.SetGrenadesRemaining(int.Parse(msgDict[selfIdString]["grenades"]) - 1, selfIsValidGrenade);
 
-            msgPublish = selfGrenadeController.GetIsOppFound()? "{\"grenade_throw\": 1}" : "{\"grenade_throw\": 0}";
+            bool isOppFound = selfGrenadeController.GetIsOppFound();
+            msgPublish = isOppFound ? "{\"grenade_throw\": 1}" : "{\"grenade_throw\": 0}";
             Debug.Log("[MQTT PUBLISH] Created message " + topicPublish);
 
             Publish();
+
+            if (isOppFound)
+            {
+                invalidActionFeedbackController.SetFeedback("Grenade Hit");
+            }
+            else
+            {
+                invalidActionFeedbackController.SetFeedback("Grenade Wasted");
+            }
             return;
+        }
+
+        if (selfAction == "shoot" && selfBulletController.GetBulletsRemaining() > 0)
+        {
+            if (oppHealthBarController.GetHealthRemaining() != int.Parse(msgDict[oppIdString]["hp"]))
+            {
+                invalidActionFeedbackController.SetFeedback("Nice Shot");
+            }
+            else
+            {
+                invalidActionFeedbackController.SetFeedback("Can You Aim Better Please?");
+            }
         }
 
         selfBulletController.SetBulletsRemaining(int.Parse(msgDict[selfIdString]["bullets"]), selfIsValidShoot);

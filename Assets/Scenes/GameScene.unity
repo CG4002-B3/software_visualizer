@@ -4823,6 +4823,18 @@ MonoBehaviour:
           m_StringArgument: Target Found
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1251559840}
+        m_TargetAssemblyTypeName: GrenadeController, Assembly-CSharp
+        m_MethodName: SetIsOppFound
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
   OnTargetLost:
     m_PersistentCalls:
       m_Calls:
@@ -4836,6 +4848,18 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: Target Not Found
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 1251559840}
+        m_TargetAssemblyTypeName: GrenadeController, Assembly-CSharp
+        m_MethodName: SetIsOppFound
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1435232751
@@ -5732,6 +5756,7 @@ MonoBehaviour:
   selfGrenadeController: {fileID: 1251559840}
   selfShieldController: {fileID: 419417575}
   selfScoreController: {fileID: 1438204572}
+  selfHealthBarController: {fileID: 0}
   oppHealthBarController: {fileID: 1425753569}
   autoTest: 0
   topicSubscribe: to_phone

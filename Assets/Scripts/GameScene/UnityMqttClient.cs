@@ -23,6 +23,7 @@ public class UnityMqttClient : M2MqttUnityClient
     public SelfScoreController selfScoreController;
     public SelfHealthBarController selfHealthBarController;
 
+    public OppShieldController oppShieldController;
     public OppHealthBarController oppHealthBarController;
 
     // Broker Configurations
@@ -127,7 +128,6 @@ public class UnityMqttClient : M2MqttUnityClient
 
     protected void setBothPlayersHpFromGameEngine(JSONNode msgDict)
     {
-        Debug.Log("[SETTING 2 PLAYERS HP] " + msgDict.ToString());
         selfHealthBarController.SetHealthRemaining(int.Parse(msgDict[selfIdString]["hp"]));
         oppHealthBarController.SetHealthRemaining(int.Parse(msgDict[oppIdString]["hp"]));
     }
@@ -146,15 +146,6 @@ public class UnityMqttClient : M2MqttUnityClient
             setSelfInventoryFromGameEngine(msgDict);
             setBothPlayersHpFromGameEngine(msgDict);
             setSelfScoreFromGameEngine(msgDict);
-            // selfBulletController.SetBulletsRemaining(int.Parse(msgDict[selfIdString]["bullets"]), false);
-            // selfGrenadeController.SetGrenadesRemaining(int.Parse(msgDict[selfIdString]["grenades"]), false);
-            // selfShieldController.SetShieldRemaining(int.Parse(msgDict[selfIdString]["num_shield"]), false);
-
-            // selfHealthBarController.SetHealthRemaining(int.Parse(msgDict[selfIdString]["hp"]));
-            // oppHealthBarController.SetHealthRemaining(int.Parse(msgDict[oppIdString]["hp"]));
-
-            // selfScoreController.SetNumKills(int.Parse(msgDict[oppIdString]["num_deaths"]));
-            // selfScoreController.SetNumDeaths(int.Parse(msgDict[selfIdString]["num_deaths"]));
 
             return;
         }
@@ -163,10 +154,30 @@ public class UnityMqttClient : M2MqttUnityClient
         bool selfActionValid = int.Parse(msgDict[selfIdString]["action_valid"]) == 1;
         bool shouldUpdateHp = int.Parse(msgDict[selfIdString]["should_update_hp"]) == 1;
 
+        int selfShieldHp = int.Parse(msgDict[selfIdString]["shield_health"]);
+        int oppShieldHp = int.Parse(msgDict[oppIdString]["shield_health"]);
+
+        float oppShieldTime = float.Parse(msgDict[oppIdString]["shield_time"]);
+
         bool selfIsValidGrenade = selfAction == "grenade" && selfActionValid;
         bool selfIsValidReload = selfAction == "reload" && selfActionValid;
         bool selfIsValidShoot = selfAction == "shoot" && int.Parse(msgDict[selfIdString]["bullets"]) > 0;
         bool selfIsValidShield = selfAction == "shield" && selfActionValid;
+
+        if (oppShieldTime == 10f)
+        {
+            oppShieldController.ActivateShield();
+        }
+
+        if (selfShieldHp == 0)
+        {
+            selfShieldController.DeactivateShield();
+        }
+
+        if (oppShieldHp == 0)
+        {
+            oppShieldController.DeactivateShield();
+        }
 
         if (selfAction == "logout")
         {

@@ -67,6 +67,12 @@ public class SelfShieldOverlayController : MonoBehaviour
         }
     }
 
+    public void DeactivateShield()
+    {
+        shouldShowShield = false;
+        isShowingShield = false;
+    }
+
     IEnumerator ShowShield()
     {
         isNextShieldReady = false;

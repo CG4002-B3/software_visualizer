@@ -1211,6 +1211,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 9000000, guid: fcb334eb247ae3e488abb081c847cf09, type: 3}
     - target: {fileID: 9500000, guid: fcb334eb247ae3e488abb081c847cf09, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: fc6b588b0b98a4433bc5a8d952023ae1, type: 2}
+    - target: {fileID: 9500000, guid: fcb334eb247ae3e488abb081c847cf09, type: 3}
       propertyPath: m_ApplyRootMotion
       value: 0
       objectReference: {fileID: 0}
@@ -4763,6 +4767,7 @@ GameObject:
   - component: {fileID: 1435232751}
   - component: {fileID: 1435232750}
   - component: {fileID: 1435232753}
+  - component: {fileID: 1435232754}
   m_Layer: 0
   m_Name: ImageTarget
   m_TagString: Untagged
@@ -4924,6 +4929,19 @@ MonoBehaviour:
   mCastedBehaviour: {fileID: 1435232751}
   mMeshFilter: {fileID: 0}
   mMeshRenderer: {fileID: 0}
+--- !u!114 &1435232754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1435232748}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 835177c12564f4c93899bbeb63a57ec2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  oppShieldPrefab: {fileID: 1834611047}
 --- !u!1 &1438204570
 GameObject:
   m_ObjectHideFlags: 0
@@ -5757,6 +5775,7 @@ MonoBehaviour:
   selfShieldController: {fileID: 419417575}
   selfScoreController: {fileID: 1438204572}
   selfHealthBarController: {fileID: 924582164}
+  oppShieldController: {fileID: 1435232754}
   oppHealthBarController: {fileID: 1425753569}
   autoTest: 0
   topicSubscribe: to_phone

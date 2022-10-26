@@ -135,7 +135,6 @@ public class UnityMqttClient : M2MqttUnityClient
     {
         string msg = System.Text.Encoding.UTF8.GetString(message);
         var msgDict = JSON.Parse(msg);
-        // print(msgDict.GetType());
         Debug.Log("[MQTT RECEIVED] Received new message: " + msg);
         SetStatus("Received");
         StoreMessage(msg);
@@ -183,7 +182,8 @@ public class UnityMqttClient : M2MqttUnityClient
             {
                 invalidActionFeedbackController.SetFeedback("Invalid Reload Action");
             }
-            else if (selfAction == "shoot" && int.Parse(msgDict[selfIdString]["bullets"]) == 0)
+            else if (selfAction == "shoot" && selfBulletController.GetBulletsRemaining() == 0
+                    && int.Parse(msgDict[selfIdString]["bullets"]) == 0)
             {
                 invalidActionFeedbackController.SetFeedback("Out of Bullets");
             }

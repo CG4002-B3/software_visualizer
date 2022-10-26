@@ -254,6 +254,7 @@ MonoBehaviour:
   narratorWords: {fileID: 1356496318}
   shieldTutorial: {fileID: 2022041813}
   videoTexture: {fileID: 332708736}
+  backgroundImage: {fileID: 560064219}
 --- !u!1 &332708734
 GameObject:
   m_ObjectHideFlags: 0

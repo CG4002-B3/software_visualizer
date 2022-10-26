@@ -127,6 +127,7 @@ public class UnityMqttClient : M2MqttUnityClient
 
     protected void setBothPlayersHpFromGameEngine(JSONNode msgDict)
     {
+        Debug.Log("[SETTING 2 PLAYERS HP] " + msgDict.ToString());
         selfHealthBarController.SetHealthRemaining(int.Parse(msgDict[selfIdString]["hp"]));
         oppHealthBarController.SetHealthRemaining(int.Parse(msgDict[oppIdString]["hp"]));
     }
@@ -135,6 +136,7 @@ public class UnityMqttClient : M2MqttUnityClient
     {
         string msg = System.Text.Encoding.UTF8.GetString(message);
         var msgDict = JSON.Parse(msg);
+        Debug.Log("[TYPE] " + msgDict.GetType());
         Debug.Log("[MQTT RECEIVED] Received new message: " + msg);
         SetStatus("Received");
         StoreMessage(msg);
@@ -242,7 +244,7 @@ public class UnityMqttClient : M2MqttUnityClient
         selfBulletController.StartReloading(selfIsValidReload);
         selfScoreController.SetNumKills(int.Parse(msgDict[oppIdString]["num_deaths"]));
 
-        oppHealthBarController.SetHealthRemaining(int.Parse(msgDict[oppIdString]["hp"]));
+        setBothPlayersHpFromGameEngine(msgDict);
     }
 
     public void DisconnectButton()

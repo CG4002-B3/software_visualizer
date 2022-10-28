@@ -150,12 +150,6 @@ public class UnityMqttClient : M2MqttUnityClient
         SetStatus("Received");
         StoreMessage(msg);
 
-        if (isHitByGrenade)
-        {
-            oppGrenadeExplosionController.ExplosionButtonPress();
-            isHitByGrenade = false;
-        }
-
         if (topic == "to_phone")
         {
             if (int.Parse(msgDict["game_engine_update"]) == 1)
@@ -355,6 +349,12 @@ public class UnityMqttClient : M2MqttUnityClient
         selfPlayerId.text = PlayerChoiceController.getSelfId() == 1 ? "PLAYER 1" : "PLAYER 2";
         status.text = selfIdString;
         messageText.text = oppIdString;
+
+        if (isHitByGrenade)
+        {
+            oppGrenadeExplosionController.ExplosionButtonPress();
+            isHitByGrenade = false;
+        }
 
         // process message
         if (eventMessages.Count > 0)

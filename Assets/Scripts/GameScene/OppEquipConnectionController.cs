@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class OppEquipConnectionController : MonoBehaviour
 {
-    private Color CONNECTED_COLOR = Color.green;
-    private Color DISCONNECTED_COLOR = Color.red;
+    private Color CONNECTED_COLOR = new Color(0f, 1f, 0f, 1f);
+    private Color DISCONNECTED_COLOR = new Color(1f, 0f, 0f, 0.4f);
 
     public Image oppVest;
     public Image oppGlove;

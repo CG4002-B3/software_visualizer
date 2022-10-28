@@ -6289,8 +6289,10 @@ MonoBehaviour:
   selfShieldController: {fileID: 419417575}
   selfScoreController: {fileID: 1438204572}
   selfHealthBarController: {fileID: 924582164}
+  selfEquipConnectionController: {fileID: 1034337427}
   oppShieldController: {fileID: 1435232754}
   oppHealthBarController: {fileID: 1425753569}
+  oppEquipConnectionController: {fileID: 379080535}
   autoTest: 0
   topicSubscribe: to_phone
   topicPublish: from_phone

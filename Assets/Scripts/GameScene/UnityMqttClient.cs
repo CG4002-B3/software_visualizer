@@ -29,6 +29,7 @@ public class UnityMqttClient : M2MqttUnityClient
     public OppShieldController oppShieldController;
     public OppHealthBarController oppHealthBarController;
     public OppEquipConnectionController oppEquipConnectionController;
+    public OppGrenadeExplosionController oppGrenadeExplosionController;
 
     // Broker Configurations
     public bool autoTest = false;
@@ -38,6 +39,7 @@ public class UnityMqttClient : M2MqttUnityClient
     public List<string> eventMessages = new List<string>();
 
     private bool checkingGrenadeHit = false;
+    private bool isHitByGrenade = false;
     private string selfIdString;
     private string oppIdString;
 
@@ -136,8 +138,8 @@ public class UnityMqttClient : M2MqttUnityClient
 
     protected void setBothPlayersHpFromGameEngine(JSONNode msgDict)
     {
-        selfHealthBarController.SetHealthRemaining(int.Parse(msgDict[selfIdString]["hp"]));
-        oppHealthBarController.SetHealthRemaining(int.Parse(msgDict[oppIdString]["hp"]));
+        selfHealthBarController.SetHealthRemaining(int.Parse(msgDict["p1"]["hp"]));
+        oppHealthBarController.SetHealthRemaining(int.Parse(msgDict["p2"]["hp"]));
     }
 
     protected override void DecodeMessage(string topic, byte[] message)
@@ -148,9 +150,14 @@ public class UnityMqttClient : M2MqttUnityClient
         SetStatus("Received");
         StoreMessage(msg);
 
+        if (isHitByGrenade)
+        {
+            oppGrenadeExplosionController.ExplosionButtonPress();
+            isHitByGrenade = false;
+        }
+
         if (topic == "to_phone")
         {
-
             if (int.Parse(msgDict["game_engine_update"]) == 1)
             {
                 setSelfInventoryFromGameEngine(msgDict);
@@ -231,7 +238,17 @@ public class UnityMqttClient : M2MqttUnityClient
                 selfGrenadeController.SetGrenadesRemaining(int.Parse(msgDict[selfIdString]["grenades"]) - 1, selfIsValidGrenade);
 
                 bool isOppFound = selfGrenadeController.GetIsOppFound();
-                msgPublish = isOppFound ? "{\"grenade_throw\": 1}" : "{\"grenade_throw\": 0}";
+                if (isOppFound)
+                {
+                    msgPublish = "{\"grenade_throw\": 1, \"thrower\": " +
+                            PlayerChoiceController.getSelfId() + "}";
+                }
+                else
+                {
+                    msgPublish = "{\"grenade_throw\": 0, \"thrower\": " +
+                            PlayerChoiceController.getSelfId() + "}";
+                }
+                // msgPublish = isOppFound ? "{\"grenade_throw\": 1}" : "{\"grenade_throw\": 0}";
                 Debug.Log("[MQTT PUBLISH] Created message " + topicPublish);
 
                 Publish();
@@ -239,10 +256,12 @@ public class UnityMqttClient : M2MqttUnityClient
                 if (isOppFound)
                 {
                     invalidActionFeedbackController.SetFeedback("Grenade Hit");
+                    isHitByGrenade = true;
                 }
                 else
                 {
                     invalidActionFeedbackController.SetFeedback("Grenade Wasted");
+                    isHitByGrenade = false;
                 }
                 return;
             }
@@ -273,7 +292,7 @@ public class UnityMqttClient : M2MqttUnityClient
             string equipment = msgDict["equipment"];
             bool isEquipmentConnected = int.Parse(msgDict["status"]) == 1;
 
-            if (setId == selfIdString)
+            if (setId == "p1")
             {
                 if (equipment == "vest")
                 {
@@ -286,21 +305,6 @@ public class UnityMqttClient : M2MqttUnityClient
                 else if (equipment == "gun")
                 {
                     selfEquipConnectionController.SetIsSelfGunConnected(isEquipmentConnected);
-                }
-            }
-            else if (setId == oppIdString)
-            {
-                if (equipment == "vest")
-                {
-                    oppEquipConnectionController.SetIsOppVestConnected(isEquipmentConnected);
-                }
-                else if (equipment == "glove")
-                {
-                    oppEquipConnectionController.SetIsOppGloveConnected(isEquipmentConnected);
-                }
-                else if (equipment == "gun")
-                {
-                    oppEquipConnectionController.SetIsOppGunConnected(isEquipmentConnected);
                 }
             }
         }
@@ -310,22 +314,7 @@ public class UnityMqttClient : M2MqttUnityClient
             string equipment = msgDict["equipment"];
             bool isEquipmentConnected = int.Parse(msgDict["status"]) == 1;
 
-            if (setId == selfIdString)
-            {
-                if (equipment == "vest")
-                {
-                    selfEquipConnectionController.SetIsSelfVestConnected(isEquipmentConnected);
-                }
-                else if (equipment == "glove")
-                {
-                    selfEquipConnectionController.SetIsSelfGloveConnected(isEquipmentConnected);
-                }
-                else if (equipment == "gun")
-                {
-                    selfEquipConnectionController.SetIsSelfGunConnected(isEquipmentConnected);
-                }
-            }
-            else if (setId == oppIdString)
+            if (setId == "p2")
             {
                 if (equipment == "vest")
                 {

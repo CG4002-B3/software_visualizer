@@ -67,6 +67,12 @@ public class SelfShieldOverlayController : MonoBehaviour
         }
     }
 
+    public void DeactivateShield()
+    {
+        shouldShowShield = false;
+        isShowingShield = false;
+    }
+
     IEnumerator ShowShield()
     {
         isNextShieldReady = false;
@@ -138,5 +144,15 @@ public class SelfShieldOverlayController : MonoBehaviour
     public int GetHpToReduceAfterShieldProtection()
     {
         return hpToReduceAfterShieldProtection;
+    }
+
+    public int GetShieldHp()
+    {
+        return shieldHp;
+    }
+
+    public void SetShieldHp(int hp)
+    {
+        shieldHp = hp;
     }
 }

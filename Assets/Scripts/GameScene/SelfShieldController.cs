@@ -51,4 +51,19 @@ public class SelfShieldController : MonoBehaviour
             selfShieldOverlayController.ActivateShield();
         }
     }
+
+    public void DeactivateShield()
+    {
+        selfShieldOverlayController.DeactivateShield();
+    }
+
+    public int GetShieldHp()
+    {
+        return selfShieldOverlayController.GetShieldHp();
+    }
+
+    public void SetShieldHp(int hp)
+    {
+        selfShieldOverlayController.SetShieldHp(hp);
+    }
 }

@@ -51,8 +51,8 @@ public class OppGrenadeExplosionController : MonoBehaviour
     {
         if (!isGrenadeThrown)
         {
-            selfShieldOverlayController.ReduceShieldHp(GRENADE_DAMAGE);
-            selfHeathBarController.ReduceHealth(GRENADE_DAMAGE);
+            // selfShieldOverlayController.ReduceShieldHp(GRENADE_DAMAGE);
+            // selfHeathBarController.ReduceHealth(GRENADE_DAMAGE);
             isGrenadeThrown = true;
         }
     }

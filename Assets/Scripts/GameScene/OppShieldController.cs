@@ -36,6 +36,7 @@ public class OppShieldController : MonoBehaviour
     void Update()
     {
         Debug.Log("Opponent Shield HP: " + shieldHp);
+        Debug.Log("[OPP SHIELD SHOWING] " + shouldShowShield.ToString());
         oppShieldPrefab.SetActive(shouldShowShield);
 
         if (isShowingShield)
@@ -57,10 +58,19 @@ public class OppShieldController : MonoBehaviour
     {
         if (!isShowingShield & isNextShieldReady)
         {
+            Debug.Log("[OPP SHIELD] ACTIVATING");
             shieldTimeRemaining = SHIELD_DELAY;
             shouldShowShield = true;
             isShieldResetHalfway = false;
         }
+    }
+
+    public void DeactivateShield()
+    {
+        Debug.Log("[OPP SHIELD] DEACTIVATING");
+
+        shouldShowShield = false;
+        isShowingShield = false;
     }
 
     IEnumerator ShowShield()
@@ -120,5 +130,15 @@ public class OppShieldController : MonoBehaviour
     public int GetHpToReduceAfterShieldProtection()
     {
         return hpToReduceAfterShieldProtection;
+    }
+
+    public int GetShieldHp()
+    {
+        return shieldHp;
+    }
+
+    public void SetShieldHp(int hp)
+    {
+        shieldHp = hp;
     }
 }

@@ -74,4 +74,9 @@ public class GrenadeController : MonoBehaviour
             explosionController.ExplosionButtonPress();
         }
     }
+
+    public int GetGrenadesRemaining()
+    {
+        return grenadesRemaining;
+    }
 }

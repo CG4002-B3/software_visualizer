@@ -170,8 +170,8 @@ public class UnityMqttClient : M2MqttUnityClient
             int selfShieldHp = int.Parse(msgDict[selfIdString]["shield_health"]);
             int oppShieldHp = int.Parse(msgDict[oppIdString]["shield_health"]);
 
-            int selfLatestHp = int.Parse(msgDict[selfIdString]["hp"]);
-            int oppLatestHp = int.Parse(msgDict[oppIdString]["hp"]);
+            int selfLatestHp = int.Parse(msgDict["p1"]["hp"]);
+            int oppLatestHp = int.Parse(msgDict["p2"]["hp"]);
 
             float oppShieldTime = float.Parse(msgDict[oppIdString]["shield_time"]);
 
@@ -197,24 +197,35 @@ public class UnityMqttClient : M2MqttUnityClient
                 oppShieldController.DeactivateShield();
             }
 
-            if (oppAction == "grenade" &&
-                    ((selfHealthBarController.GetHealthRemaining() != selfLatestHp) ||
-                    (selfShieldController.GetShieldHp() != selfShieldHp)))
+            if (oppAction == "grenade")
             {
+                isHitByGrenade = false;
+                Debug.Log("[GRENADE] self " + selfIdString);
+                Debug.Log("[GRENADE] shield " + selfShieldController.GetShieldHp() + " " + selfShieldHp);
                 if (selfIdString == "p1")
                 {
+                    Debug.Log("[GRENADE] p1 " + selfHealthBarController.GetHealthRemaining().ToString() + " " + selfLatestHp);
                     if (selfHealthBarController.GetHealthRemaining() != selfLatestHp ||
                             selfShieldController.GetShieldHp() != selfShieldHp)
                     {
                         isHitByGrenade = true;
+
+                        // oppGrenadeExplosionController.ExplosionButtonPress();
+                        // invalidActionFeedbackController.SetFeedback("Hit by Grenade");
+                        // isHitByGrenade = false;
                     }
                 }
                 else if (selfIdString == "p2")
                 {
+                    Debug.Log("[GRENADE] p2 " + oppHealthBarController.GetHealthRemaining().ToString() + " " + oppLatestHp);
                     if (oppHealthBarController.GetHealthRemaining() != oppLatestHp ||
                             selfShieldController.GetShieldHp() != selfShieldHp)
                     {
                         isHitByGrenade = true;
+
+                        // oppGrenadeExplosionController.ExplosionButtonPress();
+                        // invalidActionFeedbackController.SetFeedback("Hit by Grenade");
+                        // isHitByGrenade = false;
                     }
                 }
             }
@@ -278,12 +289,10 @@ public class UnityMqttClient : M2MqttUnityClient
                 if (isOppFound)
                 {
                     invalidActionFeedbackController.SetFeedback("Grenade Hit");
-                    isHitByGrenade = true;
                 }
                 else
                 {
                     invalidActionFeedbackController.SetFeedback("Grenade Wasted");
-                    isHitByGrenade = false;
                 }
                 return;
             }
@@ -303,7 +312,7 @@ public class UnityMqttClient : M2MqttUnityClient
                 }
                 else if (selfIdString == "p2")
                 {
-                    if (selfHealthBarController.GetHealthRemaining() != oppLatestHp)
+                    if (selfHealthBarController.GetHealthRemaining() != selfLatestHp)
                     {
                         invalidActionFeedbackController.SetFeedback("Nice Shot");
                     }
@@ -394,9 +403,9 @@ public class UnityMqttClient : M2MqttUnityClient
 
         if (isHitByGrenade)
         {
+            isHitByGrenade = false;
             oppGrenadeExplosionController.ExplosionButtonPress();
             invalidActionFeedbackController.SetFeedback("Hit by Grenade");
-            isHitByGrenade = false;
         }
 
         // process message

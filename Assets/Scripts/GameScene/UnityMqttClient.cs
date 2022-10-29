@@ -209,10 +209,6 @@ public class UnityMqttClient : M2MqttUnityClient
                             selfShieldController.GetShieldHp() != selfShieldHp)
                     {
                         isHitByGrenade = true;
-
-                        // oppGrenadeExplosionController.ExplosionButtonPress();
-                        // invalidActionFeedbackController.SetFeedback("Hit by Grenade");
-                        // isHitByGrenade = false;
                     }
                 }
                 else if (selfIdString == "p2")
@@ -222,10 +218,6 @@ public class UnityMqttClient : M2MqttUnityClient
                             selfShieldController.GetShieldHp() != selfShieldHp)
                     {
                         isHitByGrenade = true;
-
-                        // oppGrenadeExplosionController.ExplosionButtonPress();
-                        // invalidActionFeedbackController.SetFeedback("Hit by Grenade");
-                        // isHitByGrenade = false;
                     }
                 }
             }

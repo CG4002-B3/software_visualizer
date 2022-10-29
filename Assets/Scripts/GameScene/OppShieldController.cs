@@ -131,4 +131,14 @@ public class OppShieldController : MonoBehaviour
     {
         return hpToReduceAfterShieldProtection;
     }
+
+    public int GetShieldHp()
+    {
+        return shieldHp;
+    }
+
+    public void SetShieldHp(int hp)
+    {
+        shieldHp = hp;
+    }
 }

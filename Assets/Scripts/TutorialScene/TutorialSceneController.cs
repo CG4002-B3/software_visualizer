@@ -9,6 +9,7 @@ public class TutorialSceneController : MonoBehaviour
 {
     public Animator wordFadingEffect;
     public Text narratorWords;
+    public VideoPlayer reloadTutorial;
     public VideoPlayer shieldTutorial;
     public RawImage videoTexture;
     public Image backgroundImage;
@@ -20,6 +21,7 @@ public class TutorialSceneController : MonoBehaviour
     private bool welcomeMsg = true;
     private bool showShieldTutorial = false;
     private bool showShootTutorial = false;
+    private bool showReloadTutorial = false;
 
     void Start()
     {
@@ -41,6 +43,11 @@ public class TutorialSceneController : MonoBehaviour
         if (showShootTutorial)
         {
             StartCoroutine(playShootTutorial());
+        }
+
+        if (showReloadTutorial)
+        {
+            StartCoroutine(playReloadTutorial());
         }
 
         if (showShieldTutorial)
@@ -95,7 +102,6 @@ public class TutorialSceneController : MonoBehaviour
         wordFadingEffect.SetBool("showNarrator", true);
         yield return new WaitForSeconds(NARRATOR_ANIMATOR_DURATION - 0.2f);
         wordFadingEffect.SetBool("showNarrator", false);
-        // yield return new WaitForSeconds(NARRATOR_TRANSITION_OFFSET);
 
         showShieldTutorial = false;
         showingMsg = false;
@@ -120,6 +126,46 @@ public class TutorialSceneController : MonoBehaviour
         yield return new WaitForSeconds(NARRATOR_TRANSITION_OFFSET);
 
         showShootTutorial = false;
+        showingMsg = false;
+
+        showReloadTutorial = true;
+    }
+
+    IEnumerator playReloadTutorial()
+    {
+        showingMsg = true;
+
+        LightenBackground();
+        yield return new WaitForSeconds(NARRATOR_TRANSITION_OFFSET * 1.5f);
+
+        narratorWords.text = "What to do when the gun cannot shoot?";
+        wordFadingEffect.SetBool("showNarrator", true);
+        yield return new WaitForSeconds(NARRATOR_ANIMATOR_DURATION);
+        wordFadingEffect.SetBool("showNarrator", false);
+        yield return new WaitForSeconds(NARRATOR_TRANSITION_OFFSET);
+
+        narratorWords.text = "You reload!";
+        wordFadingEffect.SetBool("showNarrator", true);
+        yield return new WaitForSeconds(NARRATOR_ANIMATOR_DURATION);
+        wordFadingEffect.SetBool("showNarrator", false);
+        yield return new WaitForSeconds(NARRATOR_TRANSITION_OFFSET);
+
+        DarkenBackground();
+        videoTexture.enabled = true;
+        reloadTutorial.Play();
+        yield return new WaitForSeconds((float)reloadTutorial.length);
+        yield return new WaitForSeconds(NARRATOR_TRANSITION_OFFSET);
+
+        TransparentBackground();
+
+        videoTexture.enabled = false;
+
+        narratorWords.text = "Try reloading the gun";
+        wordFadingEffect.SetBool("showNarrator", true);
+        yield return new WaitForSeconds(NARRATOR_ANIMATOR_DURATION - 0.2f);
+        wordFadingEffect.SetBool("showNarrator", false);
+
+        showReloadTutorial = false;
         showingMsg = false;
     }
 

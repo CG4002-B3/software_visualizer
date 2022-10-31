@@ -18,8 +18,8 @@ public class TutorialSceneController : MonoBehaviour
 
     private bool showingMsg = false;
     private bool welcomeMsg = true;
-    private bool showTutorial1 = false;
-    private bool showTutorial2 = false;
+    private bool showShieldTutorial = false;
+    private bool showShootTutorial = false;
 
     void Start()
     {
@@ -32,14 +32,20 @@ public class TutorialSceneController : MonoBehaviour
         {
             return;
         }
+
         if (welcomeMsg)
         {
             StartCoroutine(showWelcomeMessage());
         }
 
-        if (showTutorial1)
+        if (showShootTutorial)
         {
-            StartCoroutine(playTutorial1());
+            StartCoroutine(playShootTutorial());
+        }
+
+        if (showShieldTutorial)
+        {
+            StartCoroutine(playShieldTutorial());
         }
     }
 
@@ -62,11 +68,10 @@ public class TutorialSceneController : MonoBehaviour
         welcomeMsg = false;
         showingMsg = false;
 
-        wordFadingEffect.SetBool("showNarrator", false);
-        showTutorial1 = true;
+        showShootTutorial = true;
     }
 
-    IEnumerator playTutorial1()
+    IEnumerator playShieldTutorial()
     {
         showingMsg = true;
 
@@ -92,30 +97,31 @@ public class TutorialSceneController : MonoBehaviour
         wordFadingEffect.SetBool("showNarrator", false);
         // yield return new WaitForSeconds(NARRATOR_TRANSITION_OFFSET);
 
-        showTutorial1 = false;
+        showShieldTutorial = false;
         showingMsg = false;
     }
 
-    // IEnumerator playTutorial2()
-    // {
-    //     showingMsg = true;
+    IEnumerator playShootTutorial()
+    {
+        showingMsg = true;
 
-    //     narratorWords.text = "Here's how to defense yourself out there";
-    //     wordFadingEffect.SetBool("showNarrator", true);
-    //     yield return new WaitForSeconds(NARRATOR_ANIMATOR_DURATION);
-    //     wordFadingEffect.SetBool("showNarrator", false);
-    //     yield return new WaitForSeconds(NARRATOR_TRANSITION_OFFSET);
+        narratorWords.text = "I'll teach you how to aim properly";
+        wordFadingEffect.SetBool("showNarrator", true);
+        yield return new WaitForSeconds(NARRATOR_ANIMATOR_DURATION);
+        wordFadingEffect.SetBool("showNarrator", false);
+        yield return new WaitForSeconds(NARRATOR_TRANSITION_OFFSET * 1.5f);
 
-    //     DarkenBackground();
-    //     videoTexture.enabled = true;
-    //     shieldTutorial.Play();
-    //     yield return new WaitForSeconds((float)shieldTutorial.length);
-    //     LightenBackground();
+        TransparentBackground();
 
-    //     videoTexture.enabled = false;
-    //     showTutorial2 = false;
-    //     showingMsg = false;
-    // }
+        narratorWords.text = "Aim at your enemy's chest";
+        wordFadingEffect.SetBool("showNarrator", true);
+        yield return new WaitForSeconds(NARRATOR_ANIMATOR_DURATION);
+        wordFadingEffect.SetBool("showNarrator", false);
+        yield return new WaitForSeconds(NARRATOR_TRANSITION_OFFSET);
+
+        showShootTutorial = false;
+        showingMsg = false;
+    }
 
     private void DarkenBackground()
     {

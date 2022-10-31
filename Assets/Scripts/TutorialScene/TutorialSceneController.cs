@@ -12,6 +12,7 @@ public class TutorialSceneController : MonoBehaviour
     public VideoPlayer reloadTutorial;
     public VideoPlayer grenadeTutorial;
     public VideoPlayer shieldTutorial;
+    public VideoPlayer exitTutorial;
     public RawImage videoTexture;
     public Image backgroundImage;
 
@@ -24,6 +25,7 @@ public class TutorialSceneController : MonoBehaviour
     private bool showReloadTutorial = false;
     private bool showGrenadeTutorial = false;
     private bool showShieldTutorial = false;
+    private bool showExitTutorial = false;
 
     void Start()
     {
@@ -61,6 +63,11 @@ public class TutorialSceneController : MonoBehaviour
         {
             StartCoroutine(playShieldTutorial());
         }
+
+        if (showExitTutorial)
+        {
+            StartCoroutine(playExitTutorial());
+        }
     }
 
     IEnumerator showWelcomeMessage()
@@ -83,38 +90,6 @@ public class TutorialSceneController : MonoBehaviour
         showingMsg = false;
 
         showShootTutorial = true;
-    }
-
-    IEnumerator playShieldTutorial()
-    {
-        showingMsg = true;
-
-        LightenBackground();
-        yield return new WaitForSeconds(NARRATOR_TRANSITION_OFFSET * 1.5f);
-
-        narratorWords.text = "Here's how to defense yourself out there";
-        wordFadingEffect.SetBool("showNarrator", true);
-        yield return new WaitForSeconds(NARRATOR_ANIMATOR_DURATION);
-        wordFadingEffect.SetBool("showNarrator", false);
-        yield return new WaitForSeconds(NARRATOR_TRANSITION_OFFSET);
-
-        DarkenBackground();
-        videoTexture.enabled = true;
-        shieldTutorial.Play();
-        yield return new WaitForSeconds((float)shieldTutorial.length);
-        yield return new WaitForSeconds(NARRATOR_TRANSITION_OFFSET);
-
-        TransparentBackground();
-
-        videoTexture.enabled = false;
-
-        narratorWords.text = "Now it's your turn to shield";
-        wordFadingEffect.SetBool("showNarrator", true);
-        yield return new WaitForSeconds(NARRATOR_ANIMATOR_DURATION - 0.2f);
-        wordFadingEffect.SetBool("showNarrator", false);
-
-        showShieldTutorial = false;
-        showingMsg = false;
     }
 
     IEnumerator playShootTutorial()
@@ -219,6 +194,78 @@ public class TutorialSceneController : MonoBehaviour
         showingMsg = false;
 
         showShieldTutorial = true;
+    }
+
+        IEnumerator playShieldTutorial()
+    {
+        showingMsg = true;
+
+        LightenBackground();
+        yield return new WaitForSeconds(NARRATOR_TRANSITION_OFFSET * 1.5f);
+
+        narratorWords.text = "Here's how to defense yourself out there";
+        wordFadingEffect.SetBool("showNarrator", true);
+        yield return new WaitForSeconds(NARRATOR_ANIMATOR_DURATION);
+        wordFadingEffect.SetBool("showNarrator", false);
+        yield return new WaitForSeconds(NARRATOR_TRANSITION_OFFSET);
+
+        DarkenBackground();
+        videoTexture.enabled = true;
+        shieldTutorial.Play();
+        yield return new WaitForSeconds((float)shieldTutorial.length);
+        yield return new WaitForSeconds(NARRATOR_TRANSITION_OFFSET);
+
+        TransparentBackground();
+
+        videoTexture.enabled = false;
+
+        narratorWords.text = "Now it's your turn to shield";
+        wordFadingEffect.SetBool("showNarrator", true);
+        yield return new WaitForSeconds(NARRATOR_ANIMATOR_DURATION - 0.2f);
+        wordFadingEffect.SetBool("showNarrator", false);
+
+        showShieldTutorial = false;
+        showingMsg = false;
+
+        showExitTutorial = true;
+    }
+
+    IEnumerator playExitTutorial()
+    {
+        showingMsg = true;
+
+        LightenBackground();
+        yield return new WaitForSeconds(NARRATOR_TRANSITION_OFFSET * 1.5f);
+
+        narratorWords.text = "What to do when you see no hope?";
+        wordFadingEffect.SetBool("showNarrator", true);
+        yield return new WaitForSeconds(NARRATOR_ANIMATOR_DURATION);
+        wordFadingEffect.SetBool("showNarrator", false);
+        yield return new WaitForSeconds(NARRATOR_TRANSITION_OFFSET);
+
+        narratorWords.text = "You quit";
+        wordFadingEffect.SetBool("showNarrator", true);
+        yield return new WaitForSeconds(NARRATOR_ANIMATOR_DURATION);
+        wordFadingEffect.SetBool("showNarrator", false);
+        yield return new WaitForSeconds(NARRATOR_TRANSITION_OFFSET);
+
+        DarkenBackground();
+        videoTexture.enabled = true;
+        exitTutorial.Play();
+        yield return new WaitForSeconds((float)exitTutorial.length);
+        yield return new WaitForSeconds(NARRATOR_TRANSITION_OFFSET);
+
+        TransparentBackground();
+
+        videoTexture.enabled = false;
+
+        narratorWords.text = "Try quitting";
+        wordFadingEffect.SetBool("showNarrator", true);
+        yield return new WaitForSeconds(NARRATOR_ANIMATOR_DURATION - 0.2f);
+        wordFadingEffect.SetBool("showNarrator", false);
+
+        showExitTutorial = false;
+        showingMsg = false;
     }
 
     private void DarkenBackground()

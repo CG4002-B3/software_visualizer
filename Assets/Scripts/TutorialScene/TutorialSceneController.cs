@@ -10,6 +10,7 @@ public class TutorialSceneController : MonoBehaviour
     public Animator wordFadingEffect;
     public Text narratorWords;
     public VideoPlayer reloadTutorial;
+    public VideoPlayer grenadeTutorial;
     public VideoPlayer shieldTutorial;
     public RawImage videoTexture;
     public Image backgroundImage;
@@ -19,9 +20,10 @@ public class TutorialSceneController : MonoBehaviour
 
     private bool showingMsg = false;
     private bool welcomeMsg = true;
-    private bool showShieldTutorial = false;
     private bool showShootTutorial = false;
     private bool showReloadTutorial = false;
+    private bool showGrenadeTutorial = false;
+    private bool showShieldTutorial = false;
 
     void Start()
     {
@@ -48,6 +50,11 @@ public class TutorialSceneController : MonoBehaviour
         if (showReloadTutorial)
         {
             StartCoroutine(playReloadTutorial());
+        }
+
+        if (showGrenadeTutorial)
+        {
+            StartCoroutine(playGrenadeTutorial());
         }
 
         if (showShieldTutorial)
@@ -166,6 +173,46 @@ public class TutorialSceneController : MonoBehaviour
         wordFadingEffect.SetBool("showNarrator", false);
 
         showReloadTutorial = false;
+        showingMsg = false;
+
+        showGrenadeTutorial = true;
+    }
+
+    IEnumerator playGrenadeTutorial()
+    {
+        showingMsg = true;
+
+        LightenBackground();
+        yield return new WaitForSeconds(NARRATOR_TRANSITION_OFFSET * 1.5f);
+
+        narratorWords.text = "Want a faster way to attack?";
+        wordFadingEffect.SetBool("showNarrator", true);
+        yield return new WaitForSeconds(NARRATOR_ANIMATOR_DURATION);
+        wordFadingEffect.SetBool("showNarrator", false);
+        yield return new WaitForSeconds(NARRATOR_TRANSITION_OFFSET);
+
+        narratorWords.text = "Try grenade";
+        wordFadingEffect.SetBool("showNarrator", true);
+        yield return new WaitForSeconds(NARRATOR_ANIMATOR_DURATION);
+        wordFadingEffect.SetBool("showNarrator", false);
+        yield return new WaitForSeconds(NARRATOR_TRANSITION_OFFSET);
+
+        DarkenBackground();
+        videoTexture.enabled = true;
+        grenadeTutorial.Play();
+        yield return new WaitForSeconds((float)grenadeTutorial.length);
+        yield return new WaitForSeconds(NARRATOR_TRANSITION_OFFSET);
+
+        TransparentBackground();
+
+        videoTexture.enabled = false;
+
+        narratorWords.text = "Throw the grenadeeeeeee";
+        wordFadingEffect.SetBool("showNarrator", true);
+        yield return new WaitForSeconds(NARRATOR_ANIMATOR_DURATION - 0.2f);
+        wordFadingEffect.SetBool("showNarrator", false);
+
+        showGrenadeTutorial = false;
         showingMsg = false;
     }
 

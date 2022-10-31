@@ -89,6 +89,9 @@ public class TutorialSceneController : MonoBehaviour
     {
         showingMsg = true;
 
+        LightenBackground();
+        yield return new WaitForSeconds(NARRATOR_TRANSITION_OFFSET * 1.5f);
+
         narratorWords.text = "Here's how to defense yourself out there";
         wordFadingEffect.SetBool("showNarrator", true);
         yield return new WaitForSeconds(NARRATOR_ANIMATOR_DURATION);
@@ -191,7 +194,7 @@ public class TutorialSceneController : MonoBehaviour
         wordFadingEffect.SetBool("showNarrator", false);
         yield return new WaitForSeconds(NARRATOR_TRANSITION_OFFSET);
 
-        narratorWords.text = "Try grenade";
+        narratorWords.text = "Use grenade";
         wordFadingEffect.SetBool("showNarrator", true);
         yield return new WaitForSeconds(NARRATOR_ANIMATOR_DURATION);
         wordFadingEffect.SetBool("showNarrator", false);
@@ -214,6 +217,8 @@ public class TutorialSceneController : MonoBehaviour
 
         showGrenadeTutorial = false;
         showingMsg = false;
+
+        showShieldTutorial = true;
     }
 
     private void DarkenBackground()

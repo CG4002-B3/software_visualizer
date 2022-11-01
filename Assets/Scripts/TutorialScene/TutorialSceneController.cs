@@ -44,11 +44,6 @@ public class TutorialSceneController : MonoBehaviour
             StartCoroutine(showWelcomeMessage());
         }
 
-        if (showShootTutorial)
-        {
-            StartCoroutine(playShootTutorial());
-        }
-
         if (showReloadTutorial)
         {
             StartCoroutine(playReloadTutorial());
@@ -87,30 +82,6 @@ public class TutorialSceneController : MonoBehaviour
         yield return new WaitForSeconds(NARRATOR_TRANSITION_OFFSET);
 
         welcomeMsg = false;
-        showingMsg = false;
-
-        showShootTutorial = true;
-    }
-
-    IEnumerator playShootTutorial()
-    {
-        showingMsg = true;
-
-        narratorWords.text = "I'll teach you how to aim properly";
-        wordFadingEffect.SetBool("showNarrator", true);
-        yield return new WaitForSeconds(NARRATOR_ANIMATOR_DURATION);
-        wordFadingEffect.SetBool("showNarrator", false);
-        yield return new WaitForSeconds(NARRATOR_TRANSITION_OFFSET * 1.5f);
-
-        TransparentBackground();
-
-        narratorWords.text = "Aim at your enemy's chest";
-        wordFadingEffect.SetBool("showNarrator", true);
-        yield return new WaitForSeconds(NARRATOR_ANIMATOR_DURATION);
-        wordFadingEffect.SetBool("showNarrator", false);
-        yield return new WaitForSeconds(NARRATOR_TRANSITION_OFFSET);
-
-        showShootTutorial = false;
         showingMsg = false;
 
         showReloadTutorial = true;

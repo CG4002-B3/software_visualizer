@@ -44,4 +44,19 @@ public class SelfEquipConnectionController : MonoBehaviour
     {
         isSelfGunConnected = isConnected;
     }
+
+    public bool GetIsSelfGunConnected()
+    {
+        return isSelfGunConnected;
+    }
+
+    public bool GetIsSelfGloveConnected()
+    {
+        return isSelfGloveConnected;
+    }
+
+    public bool GetIsSelfVestConnected()
+    {
+        return isSelfVestConnected;
+    }
 }

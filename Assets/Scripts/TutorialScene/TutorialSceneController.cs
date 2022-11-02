@@ -15,6 +15,10 @@ public class TutorialSceneController : MonoBehaviour
     public VideoPlayer exitTutorial;
     public RawImage videoTexture;
     public Image backgroundImage;
+    public MqttTutorialScene mqttTutorialScene;
+
+    private string selfAction;
+    private string selfIdString;
 
     private float NARRATOR_ANIMATOR_DURATION = 3f;
     private float NARRATOR_TRANSITION_OFFSET = 0.5f;
@@ -34,6 +38,9 @@ public class TutorialSceneController : MonoBehaviour
 
     void Update()
     {
+        selfAction = mqttTutorialScene.getSelfAction();
+        selfIdString = mqttTutorialScene.getSelfIdString();
+
         if (showingMsg)
         {
             return;

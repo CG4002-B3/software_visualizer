@@ -21,5 +21,5 @@ EditorBuildSettings:
       guid: cd050ca931d354226a303e573694421f, type: 2}
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000,
       guid: f206ee97ee7974c428dbbb47f319dce3, type: 2}
-    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 3f4a6fae66e714be8865c7f193834408,
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 935292df59fbf45b9823a5c155470dc2,
       type: 2}

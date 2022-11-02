@@ -43,6 +43,42 @@ public class TutorialSceneController : MonoBehaviour
 
         if (showingMsg)
         {
+            if (showReloadTutorial)
+            {
+                if (selfAction == "reload")
+                {
+                    showReloadTutorial = false;
+                    showingMsg = false;
+                    showGrenadeTutorial = true;
+                }
+            }
+            else if (showGrenadeTutorial)
+            {
+                if (selfAction == "grenade")
+                {
+                    showGrenadeTutorial = false;
+                    showingMsg = false;
+                    showShieldTutorial = true;
+                }
+            }
+            else if (showShieldTutorial)
+            {
+                if (selfAction == "shield")
+                {
+                    showShieldTutorial = false;
+                    showingMsg = false;
+                    showExitTutorial = true;
+                }
+            }
+            else if (showExitTutorial)
+            {
+                if (selfAction == "logout")
+                {
+                    mqttTutorialScene.PublishFinishTutorial();
+                    showExitTutorial = false;
+                    showingMsg = false;
+                }
+            }
             return;
         }
 
@@ -128,10 +164,10 @@ public class TutorialSceneController : MonoBehaviour
         yield return new WaitForSeconds(NARRATOR_ANIMATOR_DURATION - 0.2f);
         wordFadingEffect.SetBool("showNarrator", false);
 
-        showReloadTutorial = false;
-        showingMsg = false;
+        // showReloadTutorial = false;
+        // showingMsg = false;
 
-        showGrenadeTutorial = true;
+        // showGrenadeTutorial = true;
     }
 
     IEnumerator playGrenadeTutorial()
@@ -168,10 +204,10 @@ public class TutorialSceneController : MonoBehaviour
         yield return new WaitForSeconds(NARRATOR_ANIMATOR_DURATION - 0.2f);
         wordFadingEffect.SetBool("showNarrator", false);
 
-        showGrenadeTutorial = false;
-        showingMsg = false;
+        // showGrenadeTutorial = false;
+        // showingMsg = false;
 
-        showShieldTutorial = true;
+        // showShieldTutorial = true;
     }
 
         IEnumerator playShieldTutorial()
@@ -202,10 +238,10 @@ public class TutorialSceneController : MonoBehaviour
         yield return new WaitForSeconds(NARRATOR_ANIMATOR_DURATION - 0.2f);
         wordFadingEffect.SetBool("showNarrator", false);
 
-        showShieldTutorial = false;
-        showingMsg = false;
+        // showShieldTutorial = false;
+        // showingMsg = false;
 
-        showExitTutorial = true;
+        // showExitTutorial = true;
     }
 
     IEnumerator playExitTutorial()
@@ -242,8 +278,8 @@ public class TutorialSceneController : MonoBehaviour
         yield return new WaitForSeconds(NARRATOR_ANIMATOR_DURATION - 0.2f);
         wordFadingEffect.SetBool("showNarrator", false);
 
-        showExitTutorial = false;
-        showingMsg = false;
+        // showExitTutorial = false;
+        // showingMsg = false;
     }
 
     private void DarkenBackground()

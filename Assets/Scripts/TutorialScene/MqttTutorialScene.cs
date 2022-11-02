@@ -73,9 +73,9 @@ public class MqttTutorialScene : M2MqttUnityClient
         Debug.Log("[MQTT SUBSCRIPTION] Unsubscribed to to_phone");
     }
 
-    public void Publish()
+    public void PublishFinishTutorial()
     {
-        client.Publish(topicPublish, System.Text.Encoding.UTF8.GetBytes(msgPublish));
+        client.Publish(topicPublish, System.Text.Encoding.UTF8.GetBytes("finish_tutorial"));
         Debug.Log("[MQTT PUBLISH] Publish message to " + topicPublish);
     }
 

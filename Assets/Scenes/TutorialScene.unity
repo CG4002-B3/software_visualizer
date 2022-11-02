@@ -422,6 +422,7 @@ MonoBehaviour:
   exitTutorial: {fileID: 541703078}
   videoTexture: {fileID: 332708736}
   backgroundImage: {fileID: 560064219}
+  mqttTutorialScene: {fileID: 916498484}
 --- !u!1 &232395726
 GameObject:
   m_ObjectHideFlags: 0
@@ -1270,7 +1271,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 916498483}
-  - component: {fileID: 916498482}
+  - component: {fileID: 916498484}
   m_Layer: 0
   m_Name: MQTT
   m_TagString: Untagged
@@ -1278,33 +1279,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &916498482
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 916498481}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e475d06c5bf04f31a31f0fce44b234a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  brokerAddress: 78f7515427dc4bae84a4250a77b3fc1b.s1.eu.hivemq.cloud
-  brokerPort: 8883
-  isEncrypted: 1
-  connectionDelay: 500
-  timeoutOnConnection: 30000
-  autoConnect: 1
-  mqttUserName: hivemq
-  mqttPassword: hiveAdmin0
-  selfEquipConnectionController: {fileID: 0}
-  oppEquipConnectionController: {fileID: 0}
-  autoTest: 0
-  topicSubscribe: to_phone
-  topicPublish: from_phone
-  msgPublish: '{grenade_throw: 1}'
-  eventMessages: []
 --- !u!4 &916498483
 Transform:
   m_ObjectHideFlags: 0
@@ -1321,6 +1295,31 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &916498484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 916498481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0bbbf760f6ef1488cab5991ba6bb0fe9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  brokerAddress: 78f7515427dc4bae84a4250a77b3fc1b.s1.eu.hivemq.cloud
+  brokerPort: 8883
+  isEncrypted: 1
+  connectionDelay: 500
+  timeoutOnConnection: 30000
+  autoConnect: 1
+  mqttUserName: hivemq
+  mqttPassword: hiveAdmin0
+  autoTest: 0
+  topicSubscribe: to_phone
+  topicPublish: from_phone
+  msgPublish: '{grenade_throw: 1}'
+  eventMessages: []
 --- !u!1 &1295486203
 GameObject:
   m_ObjectHideFlags: 0

@@ -331,6 +331,31 @@ public class UnityMqttClient : M2MqttUnityClient
 
             if (setId == "p1")
             {
+                if (selfIdString == "p1")
+                {
+                    if (equipment == "vest")
+                    {
+                        if (selfEquipConnectionController.GetIsSelfVestConnected() && !isEquipmentConnected)
+                        {
+                            invalidActionFeedbackController.SetFeedback("Your vest is disconnected\nPlug in and plug out a battery from the vest");
+                        }
+                    }
+                    else if (equipment == "glove")
+                    {
+                        if (selfEquipConnectionController.GetIsSelfGloveConnected() && !isEquipmentConnected)
+                        {
+                            invalidActionFeedbackController.SetFeedback("Your glove is disconnected\nTurn off and turn on the switch on your glove");
+                        }
+                    }
+                    else if (equipment == "gun")
+                    {
+                        if (selfEquipConnectionController.GetIsSelfGunConnected() && !isEquipmentConnected)
+                        {
+                            invalidActionFeedbackController.SetFeedback("Your gun is disconnected\nPlug in and plug out a battery from the gun");
+                        }
+                    }
+                }
+
                 if (equipment == "vest")
                 {
                     selfEquipConnectionController.SetIsSelfVestConnected(isEquipmentConnected);
@@ -353,6 +378,31 @@ public class UnityMqttClient : M2MqttUnityClient
 
             if (setId == "p2")
             {
+                if (selfIdString == "p2")
+                {
+                    if (equipment == "vest")
+                    {
+                        if (oppEquipConnectionController.GetIsOppVestConnected() && !isEquipmentConnected)
+                        {
+                            invalidActionFeedbackController.SetFeedback("Your vest is disconnected\nPlug in and plug out a battery from the vest");
+                        }
+                    }
+                    else if (equipment == "glove")
+                    {
+                        if (oppEquipConnectionController.GetIsOppGloveConnected() && !isEquipmentConnected)
+                        {
+                            invalidActionFeedbackController.SetFeedback("Your glove is disconnected\nTurn off and turn on the switch on your glove");
+                        }
+                    }
+                    else if (equipment == "gun")
+                    {
+                        if (oppEquipConnectionController.GetIsOppGunConnected() && !isEquipmentConnected)
+                        {
+                            invalidActionFeedbackController.SetFeedback("Your gun is disconnected\nPlug in and plug out a battery from the gun");
+                        }
+                    }
+                }
+
                 if (equipment == "vest")
                 {
                     oppEquipConnectionController.SetIsOppVestConnected(isEquipmentConnected);

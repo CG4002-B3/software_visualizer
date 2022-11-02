@@ -44,4 +44,19 @@ public class OppEquipConnectionController : MonoBehaviour
     {
         isOppGunConnected = isConnected;
     }
+
+    public bool GetIsOppGunConnected()
+    {
+        return isOppGunConnected;
+    }
+
+    public bool GetIsOppGloveConnected()
+    {
+        return isOppGloveConnected;
+    }
+
+    public bool GetIsOppVestConnected()
+    {
+        return isOppVestConnected;
+    }
 }

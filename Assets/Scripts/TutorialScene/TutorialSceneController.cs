@@ -16,6 +16,7 @@ public class TutorialSceneController : MonoBehaviour
     public RawImage videoTexture;
     public Image backgroundImage;
     public MqttTutorialScene mqttTutorialScene;
+    public InvalidActionFeedbackController invalidActionFeedbackController;
 
     private string selfAction;
     private string selfIdString;
@@ -51,6 +52,10 @@ public class TutorialSceneController : MonoBehaviour
                     showingMsg = false;
                     showGrenadeTutorial = true;
                 }
+                else if (selfAction != "none")
+                {
+                    invalidActionFeedbackController.SetFeedback("Invalid " + selfAction + " action");
+                }
             }
             else if (showGrenadeTutorial)
             {
@@ -59,6 +64,10 @@ public class TutorialSceneController : MonoBehaviour
                     showGrenadeTutorial = false;
                     showingMsg = false;
                     showShieldTutorial = true;
+                }
+                else if (selfAction != "none")
+                {
+                    invalidActionFeedbackController.SetFeedback("Invalid " + selfAction + " action");
                 }
             }
             else if (showShieldTutorial)
@@ -69,6 +78,10 @@ public class TutorialSceneController : MonoBehaviour
                     showingMsg = false;
                     showExitTutorial = true;
                 }
+                else if (selfAction != "none")
+                {
+                    invalidActionFeedbackController.SetFeedback("Invalid " + selfAction + " action");
+                }
             }
             else if (showExitTutorial)
             {
@@ -77,6 +90,10 @@ public class TutorialSceneController : MonoBehaviour
                     mqttTutorialScene.PublishFinishTutorial();
                     showExitTutorial = false;
                     showingMsg = false;
+                }
+                else if (selfAction != "none")
+                {
+                    invalidActionFeedbackController.SetFeedback("Invalid " + selfAction + " action");
                 }
             }
             return;

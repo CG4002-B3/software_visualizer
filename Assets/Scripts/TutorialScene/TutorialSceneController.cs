@@ -17,6 +17,7 @@ public class TutorialSceneController : MonoBehaviour
     public Image backgroundImage;
     public MqttTutorialScene mqttTutorialScene;
     public InvalidActionFeedbackController invalidActionFeedbackController;
+    public SceneChanger sceneChanger;
 
     private string selfAction;
     private string selfIdString;
@@ -41,9 +42,11 @@ public class TutorialSceneController : MonoBehaviour
     {
         selfAction = mqttTutorialScene.getSelfAction();
         selfIdString = mqttTutorialScene.getSelfIdString();
+        bool justDecodedData = mqttTutorialScene.getJustDecodedData();
 
         if (showingMsg)
         {
+            Debug.Log("[ACTION] " + selfAction + " " + selfIdString);
             if (showReloadTutorial)
             {
                 if (selfAction == "reload")
@@ -52,9 +55,9 @@ public class TutorialSceneController : MonoBehaviour
                     showingMsg = false;
                     showGrenadeTutorial = true;
                 }
-                else if (selfAction != "none")
+                else if (justDecodedData)
                 {
-                    invalidActionFeedbackController.SetFeedback("Invalid " + selfAction + " action");
+                    invalidActionFeedbackController.SetFeedback("Invalid reload action.\nWhat a disappointment. Do it again!");
                 }
             }
             else if (showGrenadeTutorial)
@@ -65,9 +68,9 @@ public class TutorialSceneController : MonoBehaviour
                     showingMsg = false;
                     showShieldTutorial = true;
                 }
-                else if (selfAction != "none")
+                else if (justDecodedData)
                 {
-                    invalidActionFeedbackController.SetFeedback("Invalid " + selfAction + " action");
+                    invalidActionFeedbackController.SetFeedback("Invalid grenade action.\nWhat a disappointment. Do it again!");
                 }
             }
             else if (showShieldTutorial)
@@ -78,9 +81,9 @@ public class TutorialSceneController : MonoBehaviour
                     showingMsg = false;
                     showExitTutorial = true;
                 }
-                else if (selfAction != "none")
+                else if (justDecodedData)
                 {
-                    invalidActionFeedbackController.SetFeedback("Invalid " + selfAction + " action");
+                    invalidActionFeedbackController.SetFeedback("Invalid shield action.\nWhat a disappointment. Do it again!");
                 }
             }
             else if (showExitTutorial)
@@ -90,12 +93,14 @@ public class TutorialSceneController : MonoBehaviour
                     mqttTutorialScene.PublishFinishTutorial();
                     showExitTutorial = false;
                     showingMsg = false;
+                    sceneChanger.ChangeScene("GameScene");
                 }
-                else if (selfAction != "none")
+                else if (justDecodedData)
                 {
-                    invalidActionFeedbackController.SetFeedback("Invalid " + selfAction + " action");
+                    invalidActionFeedbackController.SetFeedback("Invalid logout action.\nWhat a disappointment. Do it again!");
                 }
             }
+            mqttTutorialScene.setJustDecodedData(false);
             return;
         }
 

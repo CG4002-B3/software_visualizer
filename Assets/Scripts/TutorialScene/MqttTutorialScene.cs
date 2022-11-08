@@ -21,6 +21,8 @@ public class MqttTutorialScene : M2MqttUnityClient
     private string selfIdString;
 
     private string selfAction = "none";
+    private bool justDecodedData = false;
+    private bool isMyActionSent = false;
 
     public void TestPublish()
     {
@@ -86,8 +88,9 @@ public class MqttTutorialScene : M2MqttUnityClient
         Debug.Log("[MQTT RECEIVED] Received new message: " + msg);
         StoreMessage(msg);
 
-        if (topic == "to_phone")
+        if (topic == "to_phone" && msg.Contains(selfIdString))
         {
+            justDecodedData = true;
             selfAction = msgDict[selfIdString];
         }
     }
@@ -140,5 +143,15 @@ public class MqttTutorialScene : M2MqttUnityClient
     public string getSelfIdString()
     {
         return selfIdString;
+    }
+
+    public bool getJustDecodedData()
+    {
+        return justDecodedData;
+    }
+
+    public void setJustDecodedData(bool val)
+    {
+        justDecodedData = val;
     }
 }

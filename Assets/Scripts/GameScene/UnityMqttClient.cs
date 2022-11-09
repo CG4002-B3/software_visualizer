@@ -30,6 +30,8 @@ public class UnityMqttClient : M2MqttUnityClient
     public OppHealthBarController oppHealthBarController;
     public OppEquipConnectionController oppEquipConnectionController;
     public OppGrenadeExplosionController oppGrenadeExplosionController;
+    public Text detectedActionP1;
+    public Text detectedActionP2;
 
     // Broker Configurations
     public bool autoTest = false;
@@ -424,6 +426,28 @@ public class UnityMqttClient : M2MqttUnityClient
         catch (Exception e)
         {
             Debug.Log("[MQTT Exception] Error parsing message" + msg + " " + e.ToString());
+            if (msg.Contains("p1"))
+            {
+                if (msgDict["p1"] == "none")
+                {
+                    detectedActionP1.text = "Detected IMU: no action";
+                }
+                else
+                {
+                    detectedActionP1.text = "Detected IMU: " + msgDict["p1"];
+                }
+            }
+            else if (msg.Contains("p2"))
+            {
+                if (msgDict["p2"] == "none")
+                {
+                    detectedActionP2.text = "Detected IMU: no action";
+                }
+                else
+                {
+                    detectedActionP2.text = "Detected IMU: " + msgDict["p2"];
+                }
+            }
         }
     }
 
@@ -450,6 +474,15 @@ public class UnityMqttClient : M2MqttUnityClient
         selfPlayerId.text = PlayerChoiceController.getSelfId() == 1 ? "PLAYER 1" : "PLAYER 2";
         status.text = selfIdString;
         messageText.text = oppIdString;
+
+        if (selfIdString == "p1")
+        {
+            detectedActionP2.enabled = false;
+        }
+        else if (selfIdString == "p2")
+        {
+            detectedActionP1.enabled = false;
+        }
 
         if (isHitByGrenade)
         {

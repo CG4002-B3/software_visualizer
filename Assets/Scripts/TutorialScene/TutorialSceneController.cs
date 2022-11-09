@@ -147,7 +147,7 @@ public class TutorialSceneController : MonoBehaviour
 
         if (isLogoutCorrect && selfAction != "start" && !showingMsg)
         {
-            invalidActionFeedbackController.SetFeedback("Waiting for other playing to finish tutorial");
+            invalidActionFeedbackController.SetFeedback("Waiting for other player to finish tutorial");
         }
     }
 

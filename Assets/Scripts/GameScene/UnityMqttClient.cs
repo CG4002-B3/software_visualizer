@@ -342,21 +342,21 @@ public class UnityMqttClient : M2MqttUnityClient
                         {
                             if (selfEquipConnectionController.GetIsSelfVestConnected() && !isEquipmentConnected)
                             {
-                                invalidActionFeedbackController.SetFeedback("Your vest is disconnected\nPlug in and plug out a battery from the vest");
+                                invalidActionFeedbackController.SetFeedback("Your vest is disconnected\nPlease wait for it to reconnect");
                             }
                         }
                         else if (equipment == "glove")
                         {
                             if (selfEquipConnectionController.GetIsSelfGloveConnected() && !isEquipmentConnected)
                             {
-                                invalidActionFeedbackController.SetFeedback("Your glove is disconnected\nTurn off and turn on the switch on your glove");
+                                invalidActionFeedbackController.SetFeedback("Your glove is disconnected\nPlease wait for it to reconnect");
                             }
                         }
                         else if (equipment == "gun")
                         {
                             if (selfEquipConnectionController.GetIsSelfGunConnected() && !isEquipmentConnected)
                             {
-                                invalidActionFeedbackController.SetFeedback("Your gun is disconnected\nPlug in and plug out a battery from the gun");
+                                invalidActionFeedbackController.SetFeedback("Your gun is disconnected\nPlease wait for it to reconnect");
                             }
                         }
                     }

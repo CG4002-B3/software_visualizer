@@ -23,7 +23,7 @@ public class TutorialSceneController : MonoBehaviour
     private string selfIdString;
 
     private float NARRATOR_ANIMATOR_DURATION = 3f;
-    private float NARRATOR_TRANSITION_OFFSET = 0.5f;
+    private float NARRATOR_TRANSITION_OFFSET = 1f;
 
     private bool showingMsg = false;
     private bool welcomeMsg = true;
@@ -32,6 +32,8 @@ public class TutorialSceneController : MonoBehaviour
     private bool showGrenadeTutorial = false;
     private bool showShieldTutorial = false;
     private bool showExitTutorial = false;
+    private bool showingFeedback = false;
+    private bool isLogoutCorrect = false;
 
     void Start()
     {
@@ -51,9 +53,11 @@ public class TutorialSceneController : MonoBehaviour
             {
                 if (selfAction == "reload")
                 {
+                    StartCoroutine(showGoodMoveFeedback("Good reload!"));
                     showReloadTutorial = false;
                     showingMsg = false;
                     showGrenadeTutorial = true;
+                    reloadTutorial.targetTexture.Release();
                 }
                 else if (justDecodedData)
                 {
@@ -64,9 +68,11 @@ public class TutorialSceneController : MonoBehaviour
             {
                 if (selfAction == "grenade")
                 {
+                    StartCoroutine(showGoodMoveFeedback("What a grenade!"));
                     showGrenadeTutorial = false;
                     showingMsg = false;
                     showShieldTutorial = true;
+                    grenadeTutorial.targetTexture.Release();
                 }
                 else if (justDecodedData)
                 {
@@ -77,9 +83,11 @@ public class TutorialSceneController : MonoBehaviour
             {
                 if (selfAction == "shield")
                 {
+                    StartCoroutine(showGoodMoveFeedback("You're ready to protect yourself"));
                     showShieldTutorial = false;
                     showingMsg = false;
                     showExitTutorial = true;
+                    shieldTutorial.targetTexture.Release();
                 }
                 else if (justDecodedData)
                 {
@@ -90,10 +98,12 @@ public class TutorialSceneController : MonoBehaviour
             {
                 if (selfAction == "logout")
                 {
+                    StartCoroutine(showGoodMoveFeedback("Go break a leg rookie!"));
+                    isLogoutCorrect = true;
                     mqttTutorialScene.PublishFinishTutorial();
                     showExitTutorial = false;
                     showingMsg = false;
-                    sceneChanger.ChangeScene("GameScene");
+                    exitTutorial.targetTexture.Release();
                 }
                 else if (justDecodedData)
                 {
@@ -109,25 +119,47 @@ public class TutorialSceneController : MonoBehaviour
             StartCoroutine(showWelcomeMessage());
         }
 
-        if (showReloadTutorial)
+        if (showReloadTutorial && !showingFeedback)
         {
             StartCoroutine(playReloadTutorial());
         }
 
-        if (showGrenadeTutorial)
+        if (showGrenadeTutorial && !showingFeedback)
         {
             StartCoroutine(playGrenadeTutorial());
         }
 
-        if (showShieldTutorial)
+        if (showShieldTutorial && !showingFeedback)
         {
             StartCoroutine(playShieldTutorial());
         }
 
-        if (showExitTutorial)
+        if (showExitTutorial && !showingFeedback)
         {
             StartCoroutine(playExitTutorial());
         }
+
+        if (isLogoutCorrect && selfAction == "start" && !showingMsg)
+        {
+            sceneChanger.ChangeScene("GameScene");
+            return;
+        }
+
+        if (isLogoutCorrect && selfAction != "start" && !showingMsg)
+        {
+            invalidActionFeedbackController.SetFeedback("Waiting for other playing to finish tutorial");
+        }
+    }
+
+    IEnumerator showGoodMoveFeedback(string feedback)
+    {
+        showingFeedback = true;
+        narratorWords.text = feedback;
+        wordFadingEffect.SetBool("showNarrator", true);
+        yield return new WaitForSeconds(NARRATOR_ANIMATOR_DURATION);
+        wordFadingEffect.SetBool("showNarrator", false);
+        yield return new WaitForSeconds(NARRATOR_TRANSITION_OFFSET * 2);
+        showingFeedback = false;
     }
 
     IEnumerator showWelcomeMessage()
@@ -169,13 +201,13 @@ public class TutorialSceneController : MonoBehaviour
         wordFadingEffect.SetBool("showNarrator", true);
         yield return new WaitForSeconds(NARRATOR_ANIMATOR_DURATION);
         wordFadingEffect.SetBool("showNarrator", false);
-        yield return new WaitForSeconds(NARRATOR_TRANSITION_OFFSET);
+        yield return new WaitForSeconds(NARRATOR_TRANSITION_OFFSET * 2);
 
         DarkenBackground();
         videoTexture.enabled = true;
         reloadTutorial.Play();
-        yield return new WaitForSeconds((float)reloadTutorial.length);
-        yield return new WaitForSeconds(NARRATOR_TRANSITION_OFFSET);
+        yield return new WaitForSeconds((float)reloadTutorial.length * 1.1f);
+        yield return new WaitForSeconds(NARRATOR_TRANSITION_OFFSET * 2);
 
         TransparentBackground();
 
@@ -204,13 +236,13 @@ public class TutorialSceneController : MonoBehaviour
         wordFadingEffect.SetBool("showNarrator", true);
         yield return new WaitForSeconds(NARRATOR_ANIMATOR_DURATION);
         wordFadingEffect.SetBool("showNarrator", false);
-        yield return new WaitForSeconds(NARRATOR_TRANSITION_OFFSET);
+        yield return new WaitForSeconds(NARRATOR_TRANSITION_OFFSET * 2);
 
         DarkenBackground();
         videoTexture.enabled = true;
         grenadeTutorial.Play();
-        yield return new WaitForSeconds((float)grenadeTutorial.length);
-        yield return new WaitForSeconds(NARRATOR_TRANSITION_OFFSET);
+        yield return new WaitForSeconds((float)grenadeTutorial.length * 1.1f);
+        yield return new WaitForSeconds(NARRATOR_TRANSITION_OFFSET * 2);
 
         TransparentBackground();
 
@@ -220,11 +252,6 @@ public class TutorialSceneController : MonoBehaviour
         wordFadingEffect.SetBool("showNarrator", true);
         yield return new WaitForSeconds(NARRATOR_ANIMATOR_DURATION - 0.2f);
         wordFadingEffect.SetBool("showNarrator", false);
-
-        // showGrenadeTutorial = false;
-        // showingMsg = false;
-
-        // showShieldTutorial = true;
     }
 
         IEnumerator playShieldTutorial()
@@ -238,13 +265,13 @@ public class TutorialSceneController : MonoBehaviour
         wordFadingEffect.SetBool("showNarrator", true);
         yield return new WaitForSeconds(NARRATOR_ANIMATOR_DURATION);
         wordFadingEffect.SetBool("showNarrator", false);
-        yield return new WaitForSeconds(NARRATOR_TRANSITION_OFFSET);
+        yield return new WaitForSeconds(NARRATOR_TRANSITION_OFFSET * 2);
 
         DarkenBackground();
         videoTexture.enabled = true;
         shieldTutorial.Play();
-        yield return new WaitForSeconds((float)shieldTutorial.length);
-        yield return new WaitForSeconds(NARRATOR_TRANSITION_OFFSET);
+        yield return new WaitForSeconds((float)shieldTutorial.length * 1.1f);
+        yield return new WaitForSeconds(NARRATOR_TRANSITION_OFFSET * 2);
 
         TransparentBackground();
 
@@ -273,13 +300,13 @@ public class TutorialSceneController : MonoBehaviour
         wordFadingEffect.SetBool("showNarrator", true);
         yield return new WaitForSeconds(NARRATOR_ANIMATOR_DURATION);
         wordFadingEffect.SetBool("showNarrator", false);
-        yield return new WaitForSeconds(NARRATOR_TRANSITION_OFFSET);
+        yield return new WaitForSeconds(NARRATOR_TRANSITION_OFFSET * 2);
 
         DarkenBackground();
         videoTexture.enabled = true;
         exitTutorial.Play();
-        yield return new WaitForSeconds((float)exitTutorial.length);
-        yield return new WaitForSeconds(NARRATOR_TRANSITION_OFFSET);
+        yield return new WaitForSeconds((float)exitTutorial.length * 1.1f);
+        yield return new WaitForSeconds(NARRATOR_TRANSITION_OFFSET * 2);
 
         TransparentBackground();
 

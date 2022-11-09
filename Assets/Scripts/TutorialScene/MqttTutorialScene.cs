@@ -77,7 +77,14 @@ public class MqttTutorialScene : M2MqttUnityClient
 
     public void PublishFinishTutorial()
     {
-        client.Publish(topicPublish, System.Text.Encoding.UTF8.GetBytes("finish_tutorial"));
+        if (selfIdString == "p1")
+        {
+            client.Publish(topicPublish, System.Text.Encoding.UTF8.GetBytes("finish_tutorial_1"));
+        }
+        else if (selfIdString == "p2")
+        {
+            client.Publish(topicPublish, System.Text.Encoding.UTF8.GetBytes("finish_tutorial_2"));
+        }
         Debug.Log("[MQTT PUBLISH] Publish message to " + topicPublish);
     }
 

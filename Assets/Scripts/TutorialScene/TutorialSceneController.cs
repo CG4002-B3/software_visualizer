@@ -22,7 +22,7 @@ public class TutorialSceneController : MonoBehaviour
     private string selfAction;
     private string selfIdString;
 
-    private float NARRATOR_ANIMATOR_DURATION = 3f;
+    private float NARRATOR_ANIMATOR_DURATION = 2.9f;
     private float NARRATOR_TRANSITION_OFFSET = 1f;
 
     private bool showingMsg = false;

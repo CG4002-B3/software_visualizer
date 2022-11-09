@@ -148,274 +148,282 @@ public class UnityMqttClient : M2MqttUnityClient
     {
         string msg = System.Text.Encoding.UTF8.GetString(message);
         var msgDict = JSON.Parse(msg);
-        Debug.Log("[MQTT RECEIVED] Received new message: " + msg);
-        SetStatus("Received");
-        StoreMessage(msg);
-
-        if (topic == "to_phone")
+        try
         {
-            if (int.Parse(msgDict["game_engine_update"]) == 1)
+
+            Debug.Log("[MQTT RECEIVED] Received new message: " + msg);
+            SetStatus("Received");
+            StoreMessage(msg);
+
+            if (topic == "to_phone")
             {
-                setSelfInventoryFromGameEngine(msgDict);
+                if (int.Parse(msgDict["game_engine_update"]) == 1)
+                {
+                    setSelfInventoryFromGameEngine(msgDict);
+                    setBothPlayersHpFromGameEngine(msgDict);
+                    setSelfScoreFromGameEngine(msgDict);
+
+                    return;
+                }
+
+                string selfAction = msgDict[selfIdString]["action"];
+                bool selfActionValid = int.Parse(msgDict[selfIdString]["action_valid"]) == 1;
+                bool shouldUpdateHp = int.Parse(msgDict[selfIdString]["should_update_hp"]) == 1;
+
+                int selfShieldHp = int.Parse(msgDict[selfIdString]["shield_health"]);
+                int oppShieldHp = int.Parse(msgDict[oppIdString]["shield_health"]);
+
+                int selfLatestHp = int.Parse(msgDict["p1"]["hp"]);
+                int oppLatestHp = int.Parse(msgDict["p2"]["hp"]);
+
+                float oppShieldTime = float.Parse(msgDict[oppIdString]["shield_time"]);
+
+                bool selfIsValidGrenade = selfAction == "grenade" && selfActionValid;
+                bool selfIsValidReload = selfAction == "reload" && selfActionValid;
+                bool selfIsValidShoot = selfAction == "shoot" && int.Parse(msgDict[selfIdString]["bullets"]) > 0;
+                bool selfIsValidShield = selfAction == "shield" && selfActionValid;
+
+                string oppAction = msgDict[oppIdString]["action"];
+
+                if (oppShieldTime == 10f)
+                {
+                    oppShieldController.ActivateShield();
+                }
+
+                if (selfShieldHp == 0)
+                {
+                    selfShieldController.DeactivateShield();
+                }
+
+                if (oppShieldHp == 0)
+                {
+                    oppShieldController.DeactivateShield();
+                }
+
+                if (oppAction == "grenade")
+                {
+                    isHitByGrenade = false;
+                    Debug.Log("[GRENADE] self " + selfIdString);
+                    Debug.Log("[GRENADE] shield " + selfShieldController.GetShieldHp() + " " + selfShieldHp);
+                    if (selfIdString == "p1")
+                    {
+                        Debug.Log("[GRENADE] p1 " + selfHealthBarController.GetHealthRemaining().ToString() + " " + selfLatestHp);
+                        if (selfHealthBarController.GetHealthRemaining() != selfLatestHp ||
+                                selfShieldController.GetShieldHp() != selfShieldHp)
+                        {
+                            isHitByGrenade = true;
+                        }
+                    }
+                    else if (selfIdString == "p2")
+                    {
+                        Debug.Log("[GRENADE] p2 " + oppHealthBarController.GetHealthRemaining().ToString() + " " + oppLatestHp);
+                        if (oppHealthBarController.GetHealthRemaining() != oppLatestHp ||
+                                selfShieldController.GetShieldHp() != selfShieldHp)
+                        {
+                            isHitByGrenade = true;
+                        }
+                    }
+                }
+
+                if (selfAction == "logout")
+                {
+                    invalidActionFeedbackController.SetFeedback("Game Over");
+                    return;
+                }
+
+                if (!selfActionValid)
+                {
+                    if (selfAction == "grenade" && shouldUpdateHp && !checkingGrenadeHit)
+                    {
+                        invalidActionFeedbackController.SetFeedback("Invalid Grenade Action");
+                    }
+                    else if (selfAction == "reload")
+                    {
+                        invalidActionFeedbackController.SetFeedback("Invalid Reload Action");
+                    }
+                    else if (selfAction == "shoot" && selfBulletController.GetBulletsRemaining() == 0
+                            && int.Parse(msgDict[selfIdString]["bullets"]) == 0)
+                    {
+                        invalidActionFeedbackController.SetFeedback("Out of Bullets");
+                    }
+                    else if (selfAction == "shield")
+                    {
+                        invalidActionFeedbackController.SetFeedback("Invalid Shield Action");
+                    }
+                    else
+                    {
+                        invalidActionFeedbackController.ClearFeedback();
+                    }
+                }
+
+                if (selfAction == "grenade" && checkingGrenadeHit)
+                {
+                    checkingGrenadeHit = false;
+                }
+
+                if (selfIsValidGrenade && !shouldUpdateHp)
+                {
+                    checkingGrenadeHit = true;
+                    selfGrenadeController.SetGrenadesRemaining(int.Parse(msgDict[selfIdString]["grenades"]) - 1, selfIsValidGrenade);
+
+                    bool isOppFound = selfGrenadeController.GetIsOppFound();
+                    if (isOppFound)
+                    {
+                        msgPublish = "{\"grenade_throw\": 1, \"thrower\": " +
+                                PlayerChoiceController.getSelfId() + "}";
+                    }
+                    else
+                    {
+                        msgPublish = "{\"grenade_throw\": 0, \"thrower\": " +
+                                PlayerChoiceController.getSelfId() + "}";
+                    }
+                    Debug.Log("[MQTT PUBLISH] Created message " + topicPublish);
+
+                    Publish();
+
+                    if (isOppFound)
+                    {
+                        invalidActionFeedbackController.SetFeedback("Grenade Hit");
+                    }
+                    else
+                    {
+                        invalidActionFeedbackController.SetFeedback("Grenade Wasted");
+                    }
+                    return;
+                }
+
+                if (selfAction == "shoot" && selfBulletController.GetBulletsRemaining() > 0)
+                {
+                    if (selfIdString == "p1")
+                    {
+                        if (oppHealthBarController.GetHealthRemaining() != oppLatestHp)
+                        {
+                            invalidActionFeedbackController.SetFeedback("Nice Shot");
+                        }
+                        else
+                        {
+                            invalidActionFeedbackController.SetFeedback("Can You Aim Better Please?");
+                        }
+                    }
+                    else if (selfIdString == "p2")
+                    {
+                        if (selfHealthBarController.GetHealthRemaining() != selfLatestHp)
+                        {
+                            invalidActionFeedbackController.SetFeedback("Nice Shot");
+                        }
+                        else
+                        {
+                            invalidActionFeedbackController.SetFeedback("Can You Aim Better Please?");
+                        }
+                    }
+                }
+
+                selfBulletController.SetBulletsRemaining(int.Parse(msgDict[selfIdString]["bullets"]), selfIsValidShoot);
+                selfGrenadeController.SetGrenadesRemaining(int.Parse(msgDict[selfIdString]["grenades"]), false);
+                selfShieldController.SetShieldRemaining(int.Parse(msgDict[selfIdString]["num_shield"]), selfIsValidShield);
+                selfBulletController.StartReloading(selfIsValidReload);
+                selfScoreController.SetNumKills(int.Parse(msgDict[oppIdString]["num_deaths"]));
+
                 setBothPlayersHpFromGameEngine(msgDict);
-                setSelfScoreFromGameEngine(msgDict);
-
-                return;
             }
-
-            string selfAction = msgDict[selfIdString]["action"];
-            bool selfActionValid = int.Parse(msgDict[selfIdString]["action_valid"]) == 1;
-            bool shouldUpdateHp = int.Parse(msgDict[selfIdString]["should_update_hp"]) == 1;
-
-            int selfShieldHp = int.Parse(msgDict[selfIdString]["shield_health"]);
-            int oppShieldHp = int.Parse(msgDict[oppIdString]["shield_health"]);
-
-            int selfLatestHp = int.Parse(msgDict["p1"]["hp"]);
-            int oppLatestHp = int.Parse(msgDict["p2"]["hp"]);
-
-            float oppShieldTime = float.Parse(msgDict[oppIdString]["shield_time"]);
-
-            bool selfIsValidGrenade = selfAction == "grenade" && selfActionValid;
-            bool selfIsValidReload = selfAction == "reload" && selfActionValid;
-            bool selfIsValidShoot = selfAction == "shoot" && int.Parse(msgDict[selfIdString]["bullets"]) > 0;
-            bool selfIsValidShield = selfAction == "shield" && selfActionValid;
-
-            string oppAction = msgDict[oppIdString]["action"];
-
-            if (oppShieldTime == 10f)
+            else if (topic == "hardware1")
             {
-                oppShieldController.ActivateShield();
-            }
+                string setId = msgDict["player"];
+                string equipment = msgDict["equipment"];
+                bool isEquipmentConnected = int.Parse(msgDict["status"]) == 1;
 
-            if (selfShieldHp == 0)
-            {
-                selfShieldController.DeactivateShield();
-            }
-
-            if (oppShieldHp == 0)
-            {
-                oppShieldController.DeactivateShield();
-            }
-
-            if (oppAction == "grenade")
-            {
-                isHitByGrenade = false;
-                Debug.Log("[GRENADE] self " + selfIdString);
-                Debug.Log("[GRENADE] shield " + selfShieldController.GetShieldHp() + " " + selfShieldHp);
-                if (selfIdString == "p1")
+                if (setId == "p1")
                 {
-                    Debug.Log("[GRENADE] p1 " + selfHealthBarController.GetHealthRemaining().ToString() + " " + selfLatestHp);
-                    if (selfHealthBarController.GetHealthRemaining() != selfLatestHp ||
-                            selfShieldController.GetShieldHp() != selfShieldHp)
+                    if (selfIdString == "p1")
                     {
-                        isHitByGrenade = true;
+                        if (equipment == "vest")
+                        {
+                            if (selfEquipConnectionController.GetIsSelfVestConnected() && !isEquipmentConnected)
+                            {
+                                invalidActionFeedbackController.SetFeedback("Your vest is disconnected\nPlug in and plug out a battery from the vest");
+                            }
+                        }
+                        else if (equipment == "glove")
+                        {
+                            if (selfEquipConnectionController.GetIsSelfGloveConnected() && !isEquipmentConnected)
+                            {
+                                invalidActionFeedbackController.SetFeedback("Your glove is disconnected\nTurn off and turn on the switch on your glove");
+                            }
+                        }
+                        else if (equipment == "gun")
+                        {
+                            if (selfEquipConnectionController.GetIsSelfGunConnected() && !isEquipmentConnected)
+                            {
+                                invalidActionFeedbackController.SetFeedback("Your gun is disconnected\nPlug in and plug out a battery from the gun");
+                            }
+                        }
                     }
-                }
-                else if (selfIdString == "p2")
-                {
-                    Debug.Log("[GRENADE] p2 " + oppHealthBarController.GetHealthRemaining().ToString() + " " + oppLatestHp);
-                    if (oppHealthBarController.GetHealthRemaining() != oppLatestHp ||
-                            selfShieldController.GetShieldHp() != selfShieldHp)
-                    {
-                        isHitByGrenade = true;
-                    }
-                }
-            }
 
-            if (selfAction == "logout")
-            {
-                invalidActionFeedbackController.SetFeedback("Game Over");
-                return;
-            }
-
-            if (!selfActionValid)
-            {
-                if (selfAction == "grenade" && shouldUpdateHp && !checkingGrenadeHit)
-                {
-                    invalidActionFeedbackController.SetFeedback("Invalid Grenade Action");
-                }
-                else if (selfAction == "reload")
-                {
-                    invalidActionFeedbackController.SetFeedback("Invalid Reload Action");
-                }
-                else if (selfAction == "shoot" && selfBulletController.GetBulletsRemaining() == 0
-                        && int.Parse(msgDict[selfIdString]["bullets"]) == 0)
-                {
-                    invalidActionFeedbackController.SetFeedback("Out of Bullets");
-                }
-                else if (selfAction == "shield")
-                {
-                    invalidActionFeedbackController.SetFeedback("Invalid Shield Action");
-                }
-                else
-                {
-                    invalidActionFeedbackController.ClearFeedback();
-                }
-            }
-
-            if (selfAction == "grenade" && checkingGrenadeHit)
-            {
-                checkingGrenadeHit = false;
-            }
-
-            if (selfIsValidGrenade && !shouldUpdateHp)
-            {
-                checkingGrenadeHit = true;
-                selfGrenadeController.SetGrenadesRemaining(int.Parse(msgDict[selfIdString]["grenades"]) - 1, selfIsValidGrenade);
-
-                bool isOppFound = selfGrenadeController.GetIsOppFound();
-                if (isOppFound)
-                {
-                    msgPublish = "{\"grenade_throw\": 1, \"thrower\": " +
-                            PlayerChoiceController.getSelfId() + "}";
-                }
-                else
-                {
-                    msgPublish = "{\"grenade_throw\": 0, \"thrower\": " +
-                            PlayerChoiceController.getSelfId() + "}";
-                }
-                Debug.Log("[MQTT PUBLISH] Created message " + topicPublish);
-
-                Publish();
-
-                if (isOppFound)
-                {
-                    invalidActionFeedbackController.SetFeedback("Grenade Hit");
-                }
-                else
-                {
-                    invalidActionFeedbackController.SetFeedback("Grenade Wasted");
-                }
-                return;
-            }
-
-            if (selfAction == "shoot" && selfBulletController.GetBulletsRemaining() > 0)
-            {
-                if (selfIdString == "p1")
-                {
-                    if (oppHealthBarController.GetHealthRemaining() != oppLatestHp)
-                    {
-                        invalidActionFeedbackController.SetFeedback("Nice Shot");
-                    }
-                    else
-                    {
-                        invalidActionFeedbackController.SetFeedback("Can You Aim Better Please?");
-                    }
-                }
-                else if (selfIdString == "p2")
-                {
-                    if (selfHealthBarController.GetHealthRemaining() != selfLatestHp)
-                    {
-                        invalidActionFeedbackController.SetFeedback("Nice Shot");
-                    }
-                    else
-                    {
-                        invalidActionFeedbackController.SetFeedback("Can You Aim Better Please?");
-                    }
-                }
-            }
-
-            selfBulletController.SetBulletsRemaining(int.Parse(msgDict[selfIdString]["bullets"]), selfIsValidShoot);
-            selfGrenadeController.SetGrenadesRemaining(int.Parse(msgDict[selfIdString]["grenades"]), false);
-            selfShieldController.SetShieldRemaining(int.Parse(msgDict[selfIdString]["num_shield"]), selfIsValidShield);
-            selfBulletController.StartReloading(selfIsValidReload);
-            selfScoreController.SetNumKills(int.Parse(msgDict[oppIdString]["num_deaths"]));
-
-            setBothPlayersHpFromGameEngine(msgDict);
-        }
-        else if (topic == "hardware1")
-        {
-            string setId = msgDict["player"];
-            string equipment = msgDict["equipment"];
-            bool isEquipmentConnected = int.Parse(msgDict["status"]) == 1;
-
-            if (setId == "p1")
-            {
-                if (selfIdString == "p1")
-                {
                     if (equipment == "vest")
                     {
-                        if (selfEquipConnectionController.GetIsSelfVestConnected() && !isEquipmentConnected)
-                        {
-                            invalidActionFeedbackController.SetFeedback("Your vest is disconnected\nPlug in and plug out a battery from the vest");
-                        }
+                        selfEquipConnectionController.SetIsSelfVestConnected(isEquipmentConnected);
                     }
                     else if (equipment == "glove")
                     {
-                        if (selfEquipConnectionController.GetIsSelfGloveConnected() && !isEquipmentConnected)
-                        {
-                            invalidActionFeedbackController.SetFeedback("Your glove is disconnected\nTurn off and turn on the switch on your glove");
-                        }
+                        selfEquipConnectionController.SetIsSelfGloveConnected(isEquipmentConnected);
                     }
                     else if (equipment == "gun")
                     {
-                        if (selfEquipConnectionController.GetIsSelfGunConnected() && !isEquipmentConnected)
-                        {
-                            invalidActionFeedbackController.SetFeedback("Your gun is disconnected\nPlug in and plug out a battery from the gun");
-                        }
+                        selfEquipConnectionController.SetIsSelfGunConnected(isEquipmentConnected);
                     }
                 }
-
-                if (equipment == "vest")
-                {
-                    selfEquipConnectionController.SetIsSelfVestConnected(isEquipmentConnected);
-                }
-                else if (equipment == "glove")
-                {
-                    selfEquipConnectionController.SetIsSelfGloveConnected(isEquipmentConnected);
-                }
-                else if (equipment == "gun")
-                {
-                    selfEquipConnectionController.SetIsSelfGunConnected(isEquipmentConnected);
-                }
             }
-        }
-        else if (topic == "hardware2")
-        {
-            string setId = msgDict["player"];
-            string equipment = msgDict["equipment"];
-            bool isEquipmentConnected = int.Parse(msgDict["status"]) == 1;
-
-            if (setId == "p2")
+            else if (topic == "hardware2")
             {
-                if (selfIdString == "p2")
+                string setId = msgDict["player"];
+                string equipment = msgDict["equipment"];
+                bool isEquipmentConnected = int.Parse(msgDict["status"]) == 1;
+
+                if (setId == "p2")
                 {
+                    if (selfIdString == "p2")
+                    {
+                        if (equipment == "vest")
+                        {
+                            if (oppEquipConnectionController.GetIsOppVestConnected() && !isEquipmentConnected)
+                            {
+                                invalidActionFeedbackController.SetFeedback("Your vest is disconnected\nPlug in and plug out a battery");
+                            }
+                        }
+                        else if (equipment == "glove")
+                        {
+                            if (oppEquipConnectionController.GetIsOppGloveConnected() && !isEquipmentConnected)
+                            {
+                                invalidActionFeedbackController.SetFeedback("Your glove is disconnected\nTurn off and turn on the switch");
+                            }
+                        }
+                        else if (equipment == "gun")
+                        {
+                            if (oppEquipConnectionController.GetIsOppGunConnected() && !isEquipmentConnected)
+                            {
+                                invalidActionFeedbackController.SetFeedback("Your gun is disconnected\nPlug in and plug out a battery");
+                            }
+                        }
+                    }
+
                     if (equipment == "vest")
                     {
-                        if (oppEquipConnectionController.GetIsOppVestConnected() && !isEquipmentConnected)
-                        {
-                            invalidActionFeedbackController.SetFeedback("Your vest is disconnected\nPlug in and plug out a battery");
-                        }
+                        oppEquipConnectionController.SetIsOppVestConnected(isEquipmentConnected);
                     }
                     else if (equipment == "glove")
                     {
-                        if (oppEquipConnectionController.GetIsOppGloveConnected() && !isEquipmentConnected)
-                        {
-                            invalidActionFeedbackController.SetFeedback("Your glove is disconnected\nTurn off and turn on the switch");
-                        }
+                        oppEquipConnectionController.SetIsOppGloveConnected(isEquipmentConnected);
                     }
                     else if (equipment == "gun")
                     {
-                        if (oppEquipConnectionController.GetIsOppGunConnected() && !isEquipmentConnected)
-                        {
-                            invalidActionFeedbackController.SetFeedback("Your gun is disconnected\nPlug in and plug out a battery");
-                        }
+                        oppEquipConnectionController.SetIsOppGunConnected(isEquipmentConnected);
                     }
                 }
-
-                if (equipment == "vest")
-                {
-                    oppEquipConnectionController.SetIsOppVestConnected(isEquipmentConnected);
-                }
-                else if (equipment == "glove")
-                {
-                    oppEquipConnectionController.SetIsOppGloveConnected(isEquipmentConnected);
-                }
-                else if (equipment == "gun")
-                {
-                    oppEquipConnectionController.SetIsOppGunConnected(isEquipmentConnected);
-                }
             }
+        }
+        catch (Exception e)
+        {
+            Debug.Log("[MQTT Exception] Error parsing message" + msg + " " + e.ToString());
         }
     }
 

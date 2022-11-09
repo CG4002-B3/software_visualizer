@@ -185,11 +185,6 @@ public class TutorialSceneController : MonoBehaviour
         wordFadingEffect.SetBool("showNarrator", true);
         yield return new WaitForSeconds(NARRATOR_ANIMATOR_DURATION - 0.2f);
         wordFadingEffect.SetBool("showNarrator", false);
-
-        // showReloadTutorial = false;
-        // showingMsg = false;
-
-        // showGrenadeTutorial = true;
     }
 
     IEnumerator playGrenadeTutorial()
@@ -259,11 +254,6 @@ public class TutorialSceneController : MonoBehaviour
         wordFadingEffect.SetBool("showNarrator", true);
         yield return new WaitForSeconds(NARRATOR_ANIMATOR_DURATION - 0.2f);
         wordFadingEffect.SetBool("showNarrator", false);
-
-        // showShieldTutorial = false;
-        // showingMsg = false;
-
-        // showExitTutorial = true;
     }
 
     IEnumerator playExitTutorial()
@@ -299,9 +289,6 @@ public class TutorialSceneController : MonoBehaviour
         wordFadingEffect.SetBool("showNarrator", true);
         yield return new WaitForSeconds(NARRATOR_ANIMATOR_DURATION - 0.2f);
         wordFadingEffect.SetBool("showNarrator", false);
-
-        // showExitTutorial = false;
-        // showingMsg = false;
     }
 
     private void DarkenBackground()

@@ -7,7 +7,7 @@
 ## Setting Up the Environment
 1. Clone the repo recursively
     ```sh
-    git clone git@github.com:CG4002-B3/software_visualizer.git --recurse-submodules -b feat/vuforia_setup
+    git clone git@github.com:CG4002-B3/software_visualizer.git --recurse-submodules
     ```
 2. After Unity finishes importing all the assets,
     * Go to Project Settings -> Player. In Android tab, expand Other Settings. Look for Script Compilation -> Scripting Define Symbols, and add `SSL` field.
